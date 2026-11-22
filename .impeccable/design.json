@@ -203,7 +203,7 @@
       "kind": "custom",
       "refersTo": "prompt-line",
       "description": "The $ command that heads every region; the rule variant underlines it in ink.",
-      "html": "<p class=\"ds-prompt ds-rule\"><span>conner@conneroh.com</span><span>~</span><b>$ kubectl get experience</b></p>",
+      "html": "<p class=\"ds-prompt ds-rule\"><span>connerohnesorge@conneroh.com</span><span>~</span><b>$ kubectl get experience</b></p>",
       "css": ":host{--paper:#f4f5f2;--ink:#111111;--mute:#63635e;--rule:#d6d7d2;--lit:#2b44ff;--lit-wash:#dfe3ff;--mono:'Martian Mono Variable',ui-monospace,monospace;--sans:'Schibsted Grotesk Variable',system-ui,sans-serif;--ease-out:cubic-bezier(0.16,1,0.3,1);} .ds-prompt{font-family:var(--mono);font-size:.85rem;color:var(--mute);display:flex;flex-wrap:wrap;gap:4px 12px;margin:0;background:var(--paper);} .ds-prompt b{color:var(--ink);font-weight:600;} .ds-rule{padding-bottom:14px;border-bottom:1px solid var(--ink);}"
     },
     {

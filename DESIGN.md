@@ -131,7 +131,7 @@ A cool off-white paper and a near-black ink carry almost all of the page. A warm
 ### Neutral
 - **Terminal Paper** (`paper`): page background, `theme-color`, and the favicon field. Slightly green-cool, never pure white.
 - **Ink** (`ink`): all primary text. Also the 1px structural rules: under section commands, left of the describe panel (above it on mobile), above the footer, and above code blocks.
-- **Mute Grey** (`mute`): YAML keys, prompt context (`conner@conneroh.com ~`), table headers, metadata (language, stars, dates), descriptions in tables, footer text, blockquotes.
+- **Mute Grey** (`mute`): YAML keys, prompt context (`connerohnesorge@conneroh.com ~`), table headers, metadata (language, stars, dates), descriptions in tables, footer text, blockquotes.
 - **Hairline** (`rule`): YAML indent guides, table row dividers, repo-list dividers, `hr`, and the code-block bottom edge.
 - **Selection Wash** (`lit-wash`): text selection background only.
 - **Code Wash** (`code-wash`): the faint fill behind `pre` blocks in posts. It is the only filled surface in the system.
