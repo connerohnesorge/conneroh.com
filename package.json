@@ -1,31 +1,25 @@
 {
-  "name": "conneroh.com",
-  "module": "index.js",
+  "name": "conneroh-com",
   "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=22.18"
+  },
   "scripts": {
-    "postinstall": "bun2nix -o bun.nix"
-  },
-  "devDependencies": {
-    "@types/alpinejs": "^3.13.11",
-    "@types/bun": "latest",
-    "happy-dom": "^15.0.0",
-    "playwright": "^1.49.0"
-  },
-  "peerDependencies": {
-    "typescript": "^5.7.3"
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "deploy": "cf deploy"
   },
   "dependencies": {
-    "@alpinejs/anchor": "^3.14.9",
-    "@alpinejs/intersect": "^3.14.9",
-    "@tailwindcss/cli": "^4.1.7",
-    "@types/alpinejs__anchor": "^3.13.1",
-    "@types/alpinejs__intersect": "^3.13.4",
-    "@types/mathjax": "^0.0.40",
-    "alpinejs": "^3.14.9",
-    "caniuse-lite": "^1.0.30001718",
-    "htmx-ext-preload": "^2.1.1",
-    "htmx.org": "2.0.4",
-    "preline": "^2.7.0",
-    "tailwindcss": "^4.1.7"
+    "@fontsource-variable/martian-mono": "^5.3.0",
+    "@fontsource-variable/schibsted-grotesk": "^5.3.0",
+    "astro": "^7.4.1"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.12",
+    "cf": "^1.0.0-rc.2",
+    "typescript": "^6.0.3"
   }
 }

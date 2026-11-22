@@ -1,0 +1,53 @@
+---
+import Base from "../../layouts/Base.astro";
+import { posts, render, ymd } from "../../lib";
+
+export async function getStaticPaths() {
+  return (await posts()).map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+<Base title={`${post.data.title} · Conner Ohnesorge`} description={post.data.description}>
+  <main id="main" class="wrap">
+    <p class="prompt top"><a href="/" class="back">conner@conneroh.com</a><span>~</span><b>$ kubectl get post {post.id} -o yaml</b></p>
+    <header class="head mono">
+      <div><span class="k">kind:</span> Post</div>
+      <div><span class="k">metadata:</span></div>
+      <div class="ind">
+        <div><span class="k">name:</span> {post.id}</div>
+        <div><span class="k">creationTimestamp:</span> <time datetime={ymd(post.data.created)}>{ymd(post.data.created)}</time></div>
+        {post.data.updated && <div><span class="k">lastUpdated:</span> <time datetime={ymd(post.data.updated)}>{ymd(post.data.updated)}</time></div>}
+      </div>
+      <div><span class="k">spec:</span></div>
+      <div class="ind"><span class="k">title:</span></div>
+    </header>
+    <h1>{post.data.title}</h1>
+    <article class="prose"><Content /></article>
+    <footer class="foot mono"><a href="/">$ cd ~</a><span>conneroh.com</span></footer>
+  </main>
+</Base>
+
+<style>
+  .top { padding-top: 26px; }
+  .back { color: var(--mute); text-decoration: underline; text-decoration-color: var(--rule); }
+  .back:hover { color: var(--lit); }
+  .head { font-size: .85rem; line-height: 1.75; margin-top: 40px; }
+  .ind { padding-left: 2ch; border-left: 1px solid var(--rule); margin-left: .5ch; }
+  h1 { font-weight: 800; font-size: clamp(2.2rem, 5vw, 4.2rem); line-height: 1; letter-spacing: -.03em; margin: 10px 0 56px; max-width: 20ch; padding-left: 3rem; }
+  .prose { max-width: calc(70ch + 3rem); padding-left: 3rem; font-size: 1.125rem; line-height: 1.65; }
+  .prose :global(h2) { font-size: 1.6rem; letter-spacing: -.015em; margin: 2.2em 0 .5em; line-height: 1.2; }
+  .prose :global(h3) { font-size: 1.25rem; margin: 1.8em 0 .4em; }
+  .prose :global(p), .prose :global(ul), .prose :global(ol) { margin: 0 0 1.1em; }
+  .prose :global(li) { margin-bottom: .35em; }
+  .prose :global(blockquote) { margin: 0 0 1.4em; padding: 2px 0 2px 1.2em; border-left: 1px solid var(--ink); color: var(--mute); }
+  .prose :global(code) { font-family: var(--mono); font-size: .85em; }
+  .prose :global(pre) { font-size: .85rem; padding: 18px 20px; overflow-x: auto; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--rule); background: #fbfbf9 !important; }
+  .prose :global(img) { display: block; margin: 1.6em 0; }
+  .prose :global(a) { word-break: break-word; }
+  .prose :global(table) { border-collapse: collapse; margin: 0 0 1.4em; font-size: .95rem; display: block; overflow-x: auto; }
+  .prose :global(th), .prose :global(td) { text-align: left; padding: 8px 16px 8px 0; border-top: 1px solid var(--rule); vertical-align: top; }
+  .prose :global(hr) { border: 0; border-top: 1px solid var(--rule); margin: 2.4em 0; }
+  .foot { display: flex; justify-content: space-between; gap: 16px; font-size: .78rem; color: var(--mute); margin-top: 120px; padding: 22px 0 40px; border-top: 1px solid var(--ink); }
+  @media (max-width: 700px) { h1, .prose { padding-left: 0; } }
+</style>

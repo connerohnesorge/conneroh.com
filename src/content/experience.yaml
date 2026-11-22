@@ -1,0 +1,30 @@
+# Newest first is enforced by `order` (1 = newest).
+- id: ai-engineer-cnb
+  role: AI Engineer
+  org: CNB (Cottingham & Butler)
+  period: current
+  order: 1
+- id: data-scientist-cse
+  role: Data Scientist
+  org: CSE, Colorado Springs
+  summary: Resource-constrained data pipelines and large-scale scrapers of college sports data in Go, with optimized MySQL.
+  period: Jun–Aug 2024
+  order: 2
+- id: founding-chief-ai-officer-kreative-docuvet
+  role: Founding Chief AI Officer
+  org: Kreative DocuVet
+  summary: Diarized transcription and LLM pipelines for veterinary practices. Collected a veterinarian voice corpus.
+  period: Dec 2023–Jul 2024
+  order: 3
+- id: controls-systems-engineer-intern-freund-vector
+  role: Controls Systems Engineer Intern
+  org: Freund-Vector
+  summary: Product development for granulation, compactor, and mixer machines. Rewrote an internal VB6 app in C#.
+  period: Jun–Aug 2023
+  order: 4
+- id: machine-learning-researcher-iowa-state
+  role: Machine Learning Researcher
+  org: Iowa State University
+  summary: EEG gesture recognition with real-time classification.
+  period: Dec 2021–Apr 2022
+  order: 5

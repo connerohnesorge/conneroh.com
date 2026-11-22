@@ -1,0 +1,214 @@
+---
+import Base from "../layouts/Base.astro";
+import { experience, groupsWithProjects, posts, ym } from "../lib";
+
+const groups = await groupsWithProjects();
+const jobs = await experience();
+const writing = await posts();
+const first = groups[0];
+---
+<Base
+  title="Conner Ohnesorge · AI Engineer"
+  description="Conner Ohnesorge is an AI engineer at CNB who builds AI agent tooling, pure-Go systems libraries, Nix infrastructure, and FPGA hardware."
+>
+  <main id="main" class="wrap">
+    <p class="prompt top"><span>conner@conneroh.com</span><span>~</span><b>$ kubectl auth whoami -o yaml</b></p>
+
+    <div class="whoami">
+      <div class="yaml mono">
+        <div class="meta">
+          <div><span class="k">apiVersion:</span> authentication.k8s.io/v1</div>
+          <div><span class="k">kind:</span> SelfSubjectReview</div>
+        </div>
+        <div class="k">status:</div>
+        <div class="ind">
+          <div class="k">userInfo:</div>
+          <div class="ind">
+            <div class="k">username:</div>
+            <h1 class="username">conner<br />ohnesorge</h1>
+
+            <div><span class="k" id="groups-label">groups:</span> <span class="hint k" aria-hidden="true"># select one</span></div>
+            <div class="groups" role="tablist" aria-labelledby="groups-label" aria-orientation="vertical">
+              {groups.map((g, i) => (
+                <a
+                  class="grp"
+                  href={`#group-${g.id}`}
+                  role="tab"
+                  id={`tab-${g.id}`}
+                  aria-controls={`group-${g.id}`}
+                  aria-selected={i === 0 ? "true" : "false"}
+                  tabindex={i === 0 ? 0 : -1}
+                  data-group={g.id}
+                ><span class="dash" aria-hidden="true">-</span><span class="gname">{g.id}</span><span class="count">{g.items.length} repos</span></a>
+              ))}
+            </div>
+
+            <div class="k">extra:</div>
+            <dl class="extra ind">
+              <dt class="k">role:</dt><dd>AI Engineer, CNB (Cottingham &amp; Butler)</dd>
+              <dt class="k">education:</dt><dd>B.S. Electrical Engineering, minor in Computer Science, Iowa State University</dd>
+              <dt class="k">location:</dt><dd>Dubuque, Iowa</dd>
+              <dt class="k">links:</dt>
+              <dd class="links mono"><a href="https://github.com/connerohnesorge">github</a><span class="k">·</span><a href="https://x.com/ConnerOhnesorge">x</a></dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+
+      <div class="describe">
+        {groups.map((g, i) => (
+          <section
+            class="panel"
+            id={`group-${g.id}`}
+            role="tabpanel"
+            aria-labelledby={`tab-${g.id}`}
+            data-panel={g.id}
+            data-active={i === 0 ? "" : undefined}
+          >
+            <p class="prompt">$ kubectl describe group <b class="lit">{g.id}</b></p>
+            <h2>{g.id}</h2>
+            <p class="summary">{g.summary}</p>
+            <ul>
+              {g.items.map((p) => (
+                <li>
+                  <div class="row">
+                    <a class="mono" href={p.data.repo}>{p.data.title}</a>
+                    <span class="pmeta mono">{p.data.lang}{p.data.stars ? ` · ${p.data.stars}★` : ""}</span>
+                  </div>
+                  <p>{p.body?.trim()}</p>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))}
+      </div>
+    </div>
+
+    <section class="get" aria-labelledby="exp">
+      <p class="prompt rule" id="exp"><b>$ kubectl get experience</b></p>
+      <table class="kt">
+        <thead><tr><th scope="col">NAME</th><th scope="col" class="hide-xs">ORG</th><th scope="col" class="hide-sm">DESCRIPTION</th><th scope="col">PERIOD</th></tr></thead>
+        <tbody>
+          {jobs.map((j) => (
+            <tr><td class="n">{j.data.role}<span class="sub">{j.data.org}</span></td><td class="hide-xs">{j.data.org}</td><td class="d hide-sm">{j.data.summary ?? "—"}</td><td class="m">{j.data.period}</td></tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
+
+    <section class="get" aria-labelledby="posts">
+      <p class="prompt rule" id="posts"><b>$ kubectl get posts</b></p>
+      <table class="kt">
+        <thead><tr><th scope="col">NAME</th><th scope="col" class="hide-sm">SLUG</th><th scope="col">CREATED</th></tr></thead>
+        <tbody>
+          {writing.map((p) => (
+            <tr><td class="n"><a href={`/posts/${p.id}/`}>{p.data.title}</a></td><td class="d slug hide-sm">{p.id}</td><td class="m nw">{ym(p.data.created)}</td></tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
+
+    <footer class="foot mono">
+      <span>conneroh.com</span>
+      <span><a href="https://github.com/connerohnesorge">github.com/connerohnesorge</a></span>
+    </footer>
+  </main>
+</Base>
+
+<script>
+  const tabs = [...document.querySelectorAll<HTMLAnchorElement>(".grp")];
+  const panels = [...document.querySelectorAll<HTMLElement>(".panel")];
+  document.documentElement.classList.add("js");
+
+  const select = (id: string, focus = false) => {
+    tabs.forEach((t) => {
+      const on = t.dataset.group === id;
+      t.setAttribute("aria-selected", String(on));
+      t.tabIndex = on ? 0 : -1;
+      if (on && focus) t.focus();
+    });
+    panels.forEach((p) => p.toggleAttribute("data-active", p.dataset.panel === id));
+  };
+
+  const hoverable = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  tabs.forEach((t, i) => {
+    const id = t.dataset.group!;
+    t.addEventListener("click", (e) => {
+      e.preventDefault();
+      select(id);
+      if (!hoverable) {
+        const panel = document.getElementById(`group-${id}`);
+        if (panel && panel.getBoundingClientRect().top > window.innerHeight * 0.6) {
+          const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+          panel.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+        }
+      }
+    });
+    if (hoverable) t.addEventListener("mouseenter", () => select(id));
+    t.addEventListener("keydown", (e) => {
+      const step = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[e.key];
+      if (step) { e.preventDefault(); select(tabs[(i + step + tabs.length) % tabs.length].dataset.group!, true); }
+      if (e.key === "Home") { e.preventDefault(); select(tabs[0].dataset.group!, true); }
+      if (e.key === "End") { e.preventDefault(); select(tabs[tabs.length - 1].dataset.group!, true); }
+    });
+  });
+
+  const fromHash = location.hash.replace("#group-", "");
+  if (tabs.some((t) => t.dataset.group === fromHash)) select(fromHash);
+</script>
+
+<style>
+  .top { padding-top: 26px; }
+  .whoami { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 0 64px; padding-top: 40px; min-height: calc(100svh - 80px); align-items: start; }
+  .yaml { font-size: .9rem; line-height: 1.75; }
+  .meta { margin-bottom: 24px; }
+  .ind { padding-left: 2ch; border-left: 1px solid var(--rule); margin-left: .5ch; }
+  .username { font-family: var(--sans); font-weight: 800; font-size: clamp(2.8rem, 7.4vw, 6rem); line-height: .92; letter-spacing: -.035em; margin: 6px 0 26px; }
+
+  .groups { display: flex; flex-direction: column; align-items: flex-start; margin: 6px 0 28px; }
+  .grp { display: inline-flex; align-items: center; gap: .3em; text-decoration: none; font-family: var(--sans); font-weight: 700; font-size: clamp(1.8rem, 3.6vw, 3.1rem); line-height: 1.12; letter-spacing: -.02em; transition: color .2s var(--ease-out); }
+  .grp .dash { font-family: var(--mono); font-weight: 400; font-size: .9rem; color: var(--mute); }
+  .grp .count { font-family: var(--mono); font-weight: 400; font-size: .8rem; letter-spacing: 0; color: var(--mute); margin-left: .5em; }
+  .grp:hover { color: var(--ink); }
+  .grp[aria-selected="true"], .grp[aria-selected="true"] .count { color: var(--lit); }
+
+  .extra { display: grid; grid-template-columns: max-content 1fr; gap: 4px 1.2em; margin: 0; }
+  .extra dd { margin: 0; font-family: var(--sans); font-size: 1.05rem; line-height: 1.5; }
+  .extra .links { display: flex; gap: .7em; font-size: .9rem; }
+  .hint { font-size: .75rem; margin-left: .6em; }
+
+  .describe { border-left: 1px solid var(--ink); padding-left: 36px; position: sticky; top: 24px; }
+  .panel + .panel { margin-top: 56px; }
+  :global(.js) .panel:not([data-active]) { display: none; }
+  :global(.js) .panel + .panel { margin-top: 0; }
+  .panel .prompt { font-size: .8rem; margin-bottom: 18px; }
+  .lit { color: var(--lit) !important; }
+  .panel h2 { font-size: 1.6rem; font-weight: 750; letter-spacing: -.015em; margin: 0 0 8px; }
+  .summary { margin: 0 0 26px; font-size: 1.05rem; line-height: 1.5; max-width: 46ch; }
+  .panel ul { list-style: none; margin: 0; padding: 0; }
+  .panel li { padding: 14px 0; border-top: 1px solid var(--rule); }
+  .panel .row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; line-height: 1.25; }
+  .panel .row a { font-size: .9rem; font-weight: 600; color: var(--lit); text-decoration: none; }
+  .panel .row a:hover { text-decoration: underline; }
+  .panel .pmeta { font-size: .75rem; color: var(--mute); white-space: nowrap; }
+  .panel li p { margin: 4px 0 0; line-height: 1.45; }
+
+  /* the one authored motion: the describe panel re-renders like fresh command output */
+  :global(.js) .panel[data-active] { animation: out .45s var(--ease-out) both; }
+  :global(.js) .panel[data-active] li { animation: out .5s var(--ease-out) both; }
+  :global(.js) .panel[data-active] li:nth-child(2) { animation-delay: 40ms; }
+  :global(.js) .panel[data-active] li:nth-child(3) { animation-delay: 80ms; }
+  :global(.js) .panel[data-active] li:nth-child(4) { animation-delay: 120ms; }
+  :global(.js) .panel[data-active] li:nth-child(5) { animation-delay: 160ms; }
+  @keyframes out { from { opacity: .001; clip-path: inset(0 0 100% 0); } to { opacity: 1; clip-path: inset(0 0 0 0); } }
+
+  .get { padding-top: 96px; }
+  .foot { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: .78rem; color: var(--mute); margin-top: 120px; padding: 22px 0 40px; border-top: 1px solid var(--ink); }
+
+  @media (max-width: 900px) {
+    .whoami { grid-template-columns: 1fr; min-height: 0; }
+    .describe { position: static; border-left: 0; border-top: 1px solid var(--ink); padding: 26px 0 0; margin-top: 36px; }
+    .extra { grid-template-columns: 1fr; gap: 0; }
+    .extra dd { margin-bottom: 10px; }
+  }
+</style>

@@ -1,0 +1,14 @@
+# Areas of work. Order here is the order on the homepage.
+# Projects join a group by listing its id in their `groups:` frontmatter.
+- id: agents
+  summary: Tooling that constrains, records, and coordinates AI coding agents.
+  order: 1
+- id: go
+  summary: Pure-Go reimplementations of hard systems, no cgo.
+  order: 2
+- id: nix
+  summary: Reproducible builds and machines, declared in Nix.
+  order: 3
+- id: fpga
+  summary: Digital design and embedded systems on Xilinx Zynq and custom cores.
+  order: 4

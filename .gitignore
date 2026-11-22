@@ -1,39 +1,11 @@
-# Nix
-.devenv
-.dirhash
-.direnv
-.devenv*
-
-# Git
-.pre-commit-config.json
-.pre-commit-config.yaml
-
-# Node
-node_modules
+node_modules/
+dist/
+.astro/
+.cloudflare/
 .env
-package-lock.json
-
-# Testing
-**/__screenshots__/
-coverage/
-
-# Generated Build Files
-cmd/conneroh/classes/classes.go
-
-# Editors
-.vscode
-.idea
-tmp
-*.wlf
-*.log
-.DS_Store
-result
-tigris.yaml
-*.db-journal
-*.db-shm
-*.db-wal
-*_templ.go
-target
-
-# Deployment
-fly.toml
+.env.*
+.impeccable/review/
+.impeccable/questions/
+.impeccable/mocks/
+.impeccable/direction-payload.json
+prototype/

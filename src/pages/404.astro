@@ -1,0 +1,19 @@
+---
+import Base from "../layouts/Base.astro";
+---
+<Base title="Not found · Conner Ohnesorge" description="This page does not exist.">
+  <main id="main" class="wrap">
+    <p class="prompt top"><span>conner@conneroh.com</span><span>~</span><b>$ kubectl get page <span class="path"></span></b></p>
+    <h1 class="mono">Error from server (NotFound): pages "<span class="path"></span>" not found</h1>
+    <p class="msg">That page doesn't exist. <a href="/">Go back to the homepage</a> or browse the code on <a href="https://github.com/connerohnesorge">GitHub</a>.</p>
+  </main>
+</Base>
+<script>
+  const path = location.pathname.replace(/^\//, "") || "/";
+  document.querySelectorAll(".path").forEach((el) => (el.textContent = path));
+</script>
+<style>
+  .top { padding-top: 26px; }
+  h1 { font-size: clamp(1.1rem, 2.4vw, 1.7rem); font-weight: 600; line-height: 1.4; margin: 64px 0 20px; max-width: 46ch; word-break: break-word; }
+  .msg { font-size: 1.15rem; }
+</style>
