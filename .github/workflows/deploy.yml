@@ -45,11 +45,12 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           GH_TOKEN: ${{ github.token }}
           PR: ${{ github.event.pull_request.number }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
           url=$(npx cf previews deploy dist --preview-name "pr-$PR" | jq -r '.preview_urls[0]')
           echo "Preview: $url" >> "$GITHUB_STEP_SUMMARY"
           gh pr comment "$PR" --edit-last --create-if-none \
-            --body "Preview for ${GITHUB_SHA::7}: $url"
+            --body "Preview for ${HEAD_SHA::7}: $url"
 
       - name: Deploy production
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
