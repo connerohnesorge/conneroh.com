@@ -1,22 +1,32 @@
 name: Deploy
 
+# main is protected: changes land through pull requests that must pass `build`.
+# Pull requests from this repo get a preview at https://pr-<number>.preview.conneroh.com.
+# Merging to main deploys production.
+
 on:
   pull_request:
+    types: [opened, synchronize, reopened, closed]
   push:
     branches: [main]
   workflow_dispatch:
 
 concurrency:
-  group: deploy-${{ github.ref }}
+  group: deploy-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
+env:
+  CF_SEND_TELEMETRY: "false"
+  # Fork pull requests get no secrets, so they only build and dry-run.
+  SAME_REPO: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
+
 jobs:
-  deploy:
+  build:
+    if: github.event.action != 'closed'
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    env:
-      CF_SEND_TELEMETRY: "false"
+      pull-requests: write
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
@@ -27,8 +37,40 @@ jobs:
       - run: npx astro check
       - run: npx astro build
       - run: npx cf deploy dist --dry-run
-      - if: github.event_name != 'pull_request'
+
+      - name: Deploy preview
+        if: github.event_name == 'pull_request' && env.SAME_REPO == 'true'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
+        run: |
+          url=$(npx cf previews deploy dist --preview-name "pr-$PR" | jq -r '.preview_urls[0]')
+          echo "Preview: $url" >> "$GITHUB_STEP_SUMMARY"
+          gh pr comment "$PR" --edit-last --create-if-none \
+            --body "Preview for ${GITHUB_SHA::7}: $url"
+
+      - name: Deploy production
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx cf deploy dist
+
+  delete-preview:
+    if: github.event.action == 'closed' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npx cf previews delete "pr-${{ github.event.pull_request.number }}" --worker conneroh-com --force
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

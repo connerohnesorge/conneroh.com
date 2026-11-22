@@ -7,6 +7,14 @@ export default defineConfig({
     name: "conneroh-com",
     compatibilityDate: "2026-11-01",
     assets: { htmlHandling: "auto-trailing-slash", notFoundHandling: "404-page" },
-    domains: ["conneroh.com", "www.conneroh.com"],
+    domains: [
+      "conneroh.com",
+      "www.conneroh.com",
+      // Pull request previews: <branch>.preview.conneroh.com. Never serves production.
+      { hostname: "preview.conneroh.com", production: false, previews: true },
+    ],
+    // No workers.dev URLs: the account subdomain is personal and CI logs are public.
+    workersDev: false,
+    previewUrls: false,
   },
 });

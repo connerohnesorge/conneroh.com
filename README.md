@@ -42,8 +42,11 @@ The build fails if a group has no featured projects.
 
 ## Deploy
 
-Pushes to `main` deploy automatically through `.github/workflows/deploy.yml`: type check, `astro build`, then `cf deploy dist` to the `conneroh-com` Worker on `conneroh.com`. Pull requests run the same steps with `--dry-run` and never deploy.
+`main` is protected: every change goes through a pull request, and the `build` check (type check, `astro build`, `cf deploy --dry-run`) must pass before it can merge. Admins are included.
+
+- Pull requests from this repo deploy a preview to `https://pr-<number>.preview.conneroh.com` and comment the URL on the PR. Closing the PR deletes the preview. Fork pull requests only build and dry-run.
+- Merging to `main` deploys production to the `conneroh-com` Worker on `conneroh.com` and `www`.
 
 The workflow needs two repository secrets: `CLOUDFLARE_API_TOKEN` (Workers Scripts edit, Account Settings read, and Workers Routes, Zone read, and DNS edit on the `conneroh.com` zone) and `CLOUDFLARE_ACCOUNT_ID`.
 
-Manual deploy: `npm run build && npx cf deploy dist`.
+Manual deploy (skips the pull request gate): `npm run build && npx cf deploy dist`.
