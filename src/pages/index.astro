@@ -49,7 +49,7 @@ const first = groups[0];
               <dt class="k">education:</dt><dd>B.S. Electrical Engineering, minor in Computer Science, Iowa State University</dd>
               <dt class="k">location:</dt><dd>Dubuque, Iowa</dd>
               <dt class="k">links:</dt>
-              <dd class="links mono"><a href="https://github.com/connerohnesorge">github</a><span class="k">·</span><a href="https://x.com/ConnerOhnesorge">x</a></dd>
+              <dd class="links mono"><a href="mailto:conneroisu@pm.me">conneroisu@pm.me</a><span class="k">·</span><a href="https://www.linkedin.com/in/conner-ohnesorge-b720a4238">linkedin</a><span class="k">·</span><a href="https://github.com/connerohnesorge">github</a><span class="k">·</span><a href="https://x.com/ConnerOhnesorge">x</a></dd>
             </dl>
           </div>
         </div>
@@ -65,7 +65,7 @@ const first = groups[0];
             data-panel={g.id}
             data-active={i === 0 ? "" : undefined}
           >
-            <p class="prompt">$ kubectl describe group <b class="lit">{g.id}</b></p>
+            <p class="prompt">$ kubectl describe group <b>{g.id}</b></p>
             <h2>{g.id}</h2>
             <p class="summary">{g.summary}</p>
             <ul>
@@ -73,7 +73,7 @@ const first = groups[0];
                 <li>
                   <div class="row">
                     <a class="mono" href={p.data.repo}>{p.data.title}</a>
-                    <span class="pmeta mono">{p.data.lang}{p.data.stars ? ` · ${p.data.stars}★` : ""}</span>
+                    <span class="pmeta mono">{p.data.lang}{p.data.stars ? ` · ${p.data.stars} stars` : ""}</span>
                   </div>
                   <p>{p.body?.trim()}</p>
                 </li>
@@ -110,7 +110,7 @@ const first = groups[0];
 
     <footer class="foot mono">
       <span>conneroh.com</span>
-      <span><a href="https://github.com/connerohnesorge">github.com/connerohnesorge</a></span>
+      <span><a href="mailto:conneroisu@pm.me">conneroisu@pm.me</a></span>
     </footer>
   </main>
 </Base>
@@ -174,7 +174,7 @@ const first = groups[0];
 
   .extra { display: grid; grid-template-columns: max-content 1fr; gap: 4px 1.2em; margin: 0; }
   .extra dd { margin: 0; font-family: var(--sans); font-size: 1.05rem; line-height: 1.5; }
-  .extra .links { display: flex; gap: .7em; font-size: .9rem; }
+  .extra .links { display: flex; flex-wrap: wrap; gap: .2em .7em; font-size: .9rem; }
   .hint { font-size: .75rem; margin-left: .6em; }
 
   .describe { border-left: 1px solid var(--ink); padding-left: 36px; position: sticky; top: 24px; }
@@ -182,7 +182,7 @@ const first = groups[0];
   :global(.js) .panel:not([data-active]) { display: none; }
   :global(.js) .panel + .panel { margin-top: 0; }
   .panel .prompt { font-size: .8rem; margin-bottom: 18px; }
-  .lit { color: var(--lit) !important; }
+  .panel .prompt b { color: var(--lit); }
   .panel h2 { font-size: 1.6rem; font-weight: 750; letter-spacing: -.015em; margin: 0 0 8px; }
   .summary { margin: 0 0 26px; font-size: 1.05rem; line-height: 1.5; max-width: 46ch; }
   .panel ul { list-style: none; margin: 0; padding: 0; }

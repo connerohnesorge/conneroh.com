@@ -5,5 +5,5 @@ export default defineConfig({
   output: "static",
   trailingSlash: "ignore",
   build: { format: "directory" },
-  markdown: { shikiConfig: { theme: "github-light" } },
+  markdown: { shikiConfig: { theme: "css-variables" } },
 });

@@ -8,12 +8,26 @@
   --rule: #d6d7d2;
   --lit: #2b44ff;
   --lit-wash: #dfe3ff;
+  --code-wash: #fbfbf9;
   --mono: "Martian Mono Variable", ui-monospace, monospace;
   --sans: "Schibsted Grotesk Variable", system-ui, sans-serif;
   --gutter: clamp(20px, 4vw, 56px);
   --max: 1320px;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   color-scheme: light;
+
+  /* code blocks: ink and mute only; the accent stays reserved for live state */
+  --astro-code-foreground: var(--ink);
+  --astro-code-background: var(--code-wash);
+  --astro-code-token-constant: var(--ink);
+  --astro-code-token-string: var(--ink);
+  --astro-code-token-comment: var(--mute);
+  --astro-code-token-keyword: var(--ink);
+  --astro-code-token-parameter: var(--ink);
+  --astro-code-token-function: var(--ink);
+  --astro-code-token-string-expression: var(--ink);
+  --astro-code-token-punctuation: var(--mute);
+  --astro-code-token-link: var(--ink);
 }
 
 *, *::before, *::after { box-sizing: border-box; }

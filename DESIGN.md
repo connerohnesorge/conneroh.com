@@ -8,7 +8,7 @@ colors:
   rule: "#d6d7d2"
   lit: "#2b44ff"
   lit-wash: "#dfe3ff"
-  code-wash: "#fbfbf9"
+  code-wash: "#fbfbf9"  # var(--code-wash); code tokens render in ink and mute only
 typography:
   display:
     fontFamily: "Schibsted Grotesk Variable, system-ui, sans-serif"
@@ -201,7 +201,7 @@ The primary action of the site. It is a vertical tablist of four area names at h
 ### Describe Panel (signature)
 The output of `kubectl describe group <name>`.
 - **Structure:** a mute command line naming the group in lit, then a title-size group name, a 46ch summary, and an unbulleted repo list.
-- **Repo row:** a top hairline and 14px vertical padding. A lit mono repo link (0.9rem, 600, no underline, underlined on hover) is justified against mute mono metadata (`Go · 25★`). A one-line description sits below.
+- **Repo row:** a top hairline and 14px vertical padding. A lit mono repo link (0.9rem, 600, no underline, underlined on hover) is justified against mute mono metadata (`Go · 25 stars`). A one-line description sits below.
 - **Motion:** on activation, the panel and then each row reveal top-down via `clip-path: inset(0 0 100% 0)` to full, over 0.45s/0.5s with the `ease-out` curve. Rows are staggered 40ms apart. Under reduced motion, durations collapse to 1ms.
 
 ### Prompt Line

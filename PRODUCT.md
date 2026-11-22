@@ -31,12 +31,12 @@ Visitors are mostly on desktop from a link in an application or profile; a meani
 - Curated work: 8 to 12 featured projects grouped by area. No tag taxonomy pages.
 - Writing: the five existing posts carried over from the old site.
 - Experience timeline from confirmed employment records.
-- Contact links: GitHub and X. Email address and LinkedIn handle are pending from the owner; do not invent them.
+- Contact: email conneroisu@pm.me, LinkedIn https://www.linkedin.com/in/conner-ohnesorge-b720a4238, GitHub, X.
 - Open: current role start date, graduation date, resume PDF (none on hand), headshot (none on hand).
 
 ## Brand Commitments
 
-Name: Conner Ohnesorge. Domain: conneroh.com. GitHub: connerohnesorge. X: @ConnerOhnesorge. Location: Dubuque, Iowa.
+Name: Conner Ohnesorge. Domain: conneroh.com. Email: conneroisu@pm.me. LinkedIn: conner-ohnesorge-b720a4238. GitHub: connerohnesorge. X: @ConnerOhnesorge. Location: Dubuque, Iowa.
 
 ## Evidence on Hand
 
