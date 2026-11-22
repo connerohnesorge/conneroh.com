@@ -1,6 +1,6 @@
 ---
-title: cpre488-mp2
-repo: https://github.com/connerohnesorge/cpre488-mp2
+title: zynq-hdmi-video-pipeline
+repo: https://github.com/connerohnesorge/zynq-hdmi-video-pipeline
 groups: [fpga]
 lang: Zynq
 featured: true

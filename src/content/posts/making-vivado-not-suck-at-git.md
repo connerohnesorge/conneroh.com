@@ -18,7 +18,7 @@ Vivado creates a lot of files
 
 You may need to modify the tcl script to include the correct files from a static location in the repo.
 
-For example, in our case ([cpre488-mp2](https://github.com/connerohnesorge/cpre488-mp2)), we had to statically define places for:
+For example, in our case ([zynq-hdmi-video-pipeline](https://github.com/connerohnesorge/zynq-hdmi-video-pipeline)), we had to statically define places for:
 - Constraints File
 - VHDL Files (`design_1_wrapper.vhd`)
 - HW IP Files (`avnet_hdmi_out`, `avnet_hdmi_in`, `interfaces`, `onsemi_vita_cam`, `onsemi_vita_spi`)
@@ -55,10 +55,10 @@ git commit -m "added digital_camera_pipeline.tcl"
 Upon new clone of repo, cd to repo directory and execute generate tcl script.
 
 ```bash
-git clone https://github.com/conneroisu/cpre488-mp2.git
+git clone https://github.com/connerohnesorge/zynq-hdmi-video-pipeline.git
 # IN VIVADO TCL CONSOLE -> 
 # On IAState Windows PC
-# cd C:/Users/connero/Downloads/cpre488-mp2/Vivado/digital_camera_pipeline
+# cd C:/Users/connero/Downloads/zynq-hdmi-video-pipeline/Vivado/digital_camera_pipeline
 
 # IN VIVADO TCL CONSOLE -> 
 # source digital_camera_pipeline.tcl
