@@ -15,3 +15,6 @@
 - id: fpga
   summary: Digital design and embedded systems on Xilinx Zynq, Kria, and custom cores.
   order: 5
+- id: macos
+  summary: Native macOS apps built on the Accessibility API.
+  order: 6
