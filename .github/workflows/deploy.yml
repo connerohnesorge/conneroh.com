@@ -1,6 +1,6 @@
 name: Deploy
 
-# main is protected: changes land through pull requests that must pass `build`.
+# Pushes to main deploy production. Pull requests are optional.
 # Pull requests from this repo get a preview at https://pr-<number>.preview.conneroh.com.
 # Merging to main deploys production.
 
