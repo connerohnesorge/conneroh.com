@@ -1,0 +1,295 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-22T17:54:53+00:00",
+  "title": "Design System: conneroh.com",
+  "extensions": {
+    "colorMeta": {
+      "lit": {
+        "role": "primary",
+        "displayName": "Signal Blue",
+        "canonical": "oklch(51.5% 0.271 268)",
+        "tonalRamp": [
+          "oklch(15% 0.2 268)",
+          "oklch(26% 0.2 268)",
+          "oklch(38% 0.2 268)",
+          "oklch(50% 0.2 268)",
+          "oklch(62% 0.2 268)",
+          "oklch(74% 0.2 268)",
+          "oklch(85% 0.2 268)",
+          "oklch(95% 0.2 268)"
+        ]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Terminal Paper",
+        "canonical": "oklch(96.9% 0.004 122)",
+        "tonalRamp": [
+          "oklch(15% 0.004 122)",
+          "oklch(26% 0.004 122)",
+          "oklch(38% 0.004 122)",
+          "oklch(50% 0.004 122)",
+          "oklch(62% 0.004 122)",
+          "oklch(74% 0.004 122)",
+          "oklch(85% 0.004 122)",
+          "oklch(95% 0.004 122)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "oklch(17.8% 0 0)",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26% 0 0)",
+          "oklch(38% 0 0)",
+          "oklch(50% 0 0)",
+          "oklch(62% 0 0)",
+          "oklch(74% 0 0)",
+          "oklch(85% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "mute": {
+        "role": "neutral",
+        "displayName": "Mute Grey",
+        "canonical": "oklch(49.8% 0.008 107)",
+        "tonalRamp": [
+          "oklch(15% 0.008 107)",
+          "oklch(26% 0.008 107)",
+          "oklch(38% 0.008 107)",
+          "oklch(50% 0.008 107)",
+          "oklch(62% 0.008 107)",
+          "oklch(74% 0.008 107)",
+          "oklch(85% 0.008 107)",
+          "oklch(95% 0.008 107)"
+        ]
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "oklch(87.7% 0.007 116)",
+        "tonalRamp": [
+          "oklch(15% 0.007 116)",
+          "oklch(26% 0.007 116)",
+          "oklch(38% 0.007 116)",
+          "oklch(50% 0.007 116)",
+          "oklch(62% 0.007 116)",
+          "oklch(74% 0.007 116)",
+          "oklch(85% 0.007 116)",
+          "oklch(95% 0.007 116)"
+        ]
+      },
+      "lit-wash": {
+        "role": "primary",
+        "displayName": "Selection Wash",
+        "canonical": "oklch(92.1% 0.038 279)",
+        "tonalRamp": [
+          "oklch(15% 0.038 279)",
+          "oklch(26% 0.038 279)",
+          "oklch(38% 0.038 279)",
+          "oklch(50% 0.038 279)",
+          "oklch(62% 0.038 279)",
+          "oklch(74% 0.038 279)",
+          "oklch(85% 0.038 279)",
+          "oklch(95% 0.038 279)"
+        ]
+      },
+      "code-wash": {
+        "role": "neutral",
+        "displayName": "Code Wash",
+        "canonical": "oklch(98.8% 0.003 106)",
+        "tonalRamp": [
+          "oklch(15% 0.003 106)",
+          "oklch(26% 0.003 106)",
+          "oklch(38% 0.003 106)",
+          "oklch(50% 0.003 106)",
+          "oklch(62% 0.003 106)",
+          "oklch(74% 0.003 106)",
+          "oklch(85% 0.003 106)",
+          "oklch(95% 0.003 106)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "The username on the homepage; once per site."
+      },
+      "display-post": {
+        "displayName": "Display Post",
+        "purpose": "Post title under spec.title:, max 20ch."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "The four group names in the whoami tablist."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Describe-panel group name and post h2s."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Default text and table cells."
+      },
+      "body-prose": {
+        "displayName": "Body Prose",
+        "purpose": "Post articles, max 70ch."
+      },
+      "yaml": {
+        "displayName": "YAML",
+        "purpose": "Key/value lines of the whoami and post headers."
+      },
+      "command": {
+        "displayName": "Command",
+        "purpose": "$ prompt lines heading every region."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "kubectl get column headers."
+      }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "The only easing; group color change and panel reveal."
+      },
+      {
+        "name": "group-color",
+        "value": "color 0.2s ease-out",
+        "purpose": "Group tab selection color change."
+      },
+      {
+        "name": "panel-print",
+        "value": "clip-path inset(0 0 100% 0) to inset(0), 0.45s panel / 0.5s rows, 40ms row stagger",
+        "purpose": "Describe panel re-renders like fresh command output. Collapses to 1ms under reduced motion."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "xs",
+        "value": "600px"
+      },
+      {
+        "name": "post",
+        "value": "700px"
+      },
+      {
+        "name": "sm",
+        "value": "900px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Group Tab",
+      "kind": "nav",
+      "refersTo": "group-tab",
+      "description": "Vertical tablist of work areas; selecting one re-renders the describe panel.",
+      "html": "<div class=\"ds-groups\" role=\"tablist\"><a class=\"ds-grp\" role=\"tab\" aria-selected=\"true\" href=\"#\"><span class=\"ds-dash\">-</span><span>agents</span><span class=\"ds-count\">4 repos</span></a><a class=\"ds-grp\" role=\"tab\" aria-selected=\"false\" href=\"#\"><span class=\"ds-dash\">-</span><span>go</span><span class=\"ds-count\">4 repos</span></a><a class=\"ds-grp\" role=\"tab\" aria-selected=\"false\" href=\"#\"><span class=\"ds-dash\">-</span><span>fpga</span><span class=\"ds-count\">5 repos</span></a></div>",
+      "css": ":host{--paper:#f4f5f2;--ink:#111111;--mute:#63635e;--rule:#d6d7d2;--lit:#2b44ff;--lit-wash:#dfe3ff;--mono:'Martian Mono Variable',ui-monospace,monospace;--sans:'Schibsted Grotesk Variable',system-ui,sans-serif;--ease-out:cubic-bezier(0.16,1,0.3,1);} .ds-groups{display:flex;flex-direction:column;align-items:flex-start;background:var(--paper);padding:16px;} .ds-grp{display:inline-flex;align-items:center;gap:.3em;text-decoration:none;color:var(--ink);font-family:var(--sans);font-weight:700;font-size:clamp(1.8rem,3.6vw,3.1rem);line-height:1.12;letter-spacing:-.02em;transition:color .2s var(--ease-out);} .ds-dash{font-family:var(--mono);font-weight:400;font-size:.9rem;color:var(--mute);} .ds-count{font-family:var(--mono);font-weight:400;font-size:.8rem;letter-spacing:0;color:var(--mute);margin-left:.5em;} .ds-grp:hover{color:var(--ink);} .ds-grp[aria-selected=\"true\"],.ds-grp[aria-selected=\"true\"] .ds-count{color:var(--lit);} .ds-grp:focus-visible{outline:2px solid var(--lit);outline-offset:3px;border-radius:1px;}"
+    },
+    {
+      "name": "Describe Panel",
+      "kind": "custom",
+      "refersTo": "describe-panel",
+      "description": "kubectl describe output for the active group: command, name, summary, repo rows with language and stars.",
+      "html": "<section class=\"ds-panel\"><p class=\"ds-cmd\">$ kubectl describe group <b>agents</b></p><h2>agents</h2><p class=\"ds-sum\">Tooling that constrains, records, and coordinates AI coding agents.</p><ul><li><div class=\"ds-row\"><a href=\"#\">conclaude</a><span>Rust · 37★</span></div><p>Safely constrain and conclude Claude Code sessions with hooks and rules.</p></li><li><div class=\"ds-row\"><a href=\"#\">spectr</a><span>Go · 5★</span></div><p>Validatable spec-driven development for agent workflows.</p></li></ul></section>",
+      "css": ":host{--paper:#f4f5f2;--ink:#111111;--mute:#63635e;--rule:#d6d7d2;--lit:#2b44ff;--lit-wash:#dfe3ff;--mono:'Martian Mono Variable',ui-monospace,monospace;--sans:'Schibsted Grotesk Variable',system-ui,sans-serif;--ease-out:cubic-bezier(0.16,1,0.3,1);} .ds-panel{background:var(--paper);color:var(--ink);border-left:1px solid var(--ink);padding:8px 16px 8px 36px;font-family:var(--sans);font-size:1.0625rem;line-height:1.55;animation:ds-out .45s var(--ease-out) both;} .ds-cmd{font-family:var(--mono);font-size:.8rem;color:var(--mute);margin:0 0 18px;} .ds-cmd b{color:var(--lit);font-weight:600;} .ds-panel h2{font-size:1.6rem;font-weight:750;letter-spacing:-.015em;margin:0 0 8px;} .ds-sum{margin:0 0 26px;font-size:1.05rem;line-height:1.5;max-width:46ch;} .ds-panel ul{list-style:none;margin:0;padding:0;} .ds-panel li{padding:14px 0;border-top:1px solid var(--rule);} .ds-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;line-height:1.25;} .ds-row a{font-family:var(--mono);font-size:.9rem;font-weight:600;color:var(--lit);text-decoration:none;} .ds-row a:hover{text-decoration:underline;} .ds-row a:focus-visible{outline:2px solid var(--lit);outline-offset:3px;} .ds-row span{font-family:var(--mono);font-size:.75rem;color:var(--mute);white-space:nowrap;} .ds-panel li p{margin:4px 0 0;line-height:1.45;} @keyframes ds-out{from{opacity:.001;clip-path:inset(0 0 100% 0);}to{opacity:1;clip-path:inset(0 0 0 0);}} @media (prefers-reduced-motion:reduce){.ds-panel{animation-duration:1ms;}}"
+    },
+    {
+      "name": "Prompt Line",
+      "kind": "custom",
+      "refersTo": "prompt-line",
+      "description": "The $ command that heads every region; the rule variant underlines it in ink.",
+      "html": "<p class=\"ds-prompt ds-rule\"><span>conner@conneroh.com</span><span>~</span><b>$ kubectl get experience</b></p>",
+      "css": ":host{--paper:#f4f5f2;--ink:#111111;--mute:#63635e;--rule:#d6d7d2;--lit:#2b44ff;--lit-wash:#dfe3ff;--mono:'Martian Mono Variable',ui-monospace,monospace;--sans:'Schibsted Grotesk Variable',system-ui,sans-serif;--ease-out:cubic-bezier(0.16,1,0.3,1);} .ds-prompt{font-family:var(--mono);font-size:.85rem;color:var(--mute);display:flex;flex-wrap:wrap;gap:4px 12px;margin:0;background:var(--paper);} .ds-prompt b{color:var(--ink);font-weight:600;} .ds-rule{padding-bottom:14px;border-bottom:1px solid var(--ink);}"
+    },
+    {
+      "name": "Get Table",
+      "kind": "card",
+      "refersTo": "get-table-cell",
+      "description": "kubectl get listing: mono caps header, hairline rows, name turns lit on row hover.",
+      "html": "<table class=\"ds-kt\"><thead><tr><th>NAME</th><th>ORG</th><th>PERIOD</th></tr></thead><tbody><tr><td class=\"ds-n\"><a href=\"#\">AI Engineer</a></td><td>CNB</td><td class=\"ds-m\">current</td></tr><tr><td class=\"ds-n\"><a href=\"#\">Data Scientist</a></td><td>CSE</td><td class=\"ds-m\">2024-06 – 2024-08</td></tr></tbody></table>",
+      "css": ":host{--paper:#f4f5f2;--ink:#111111;--mute:#63635e;--rule:#d6d7d2;--lit:#2b44ff;--lit-wash:#dfe3ff;--mono:'Martian Mono Variable',ui-monospace,monospace;--sans:'Schibsted Grotesk Variable',system-ui,sans-serif;--ease-out:cubic-bezier(0.16,1,0.3,1);} .ds-kt{width:100%;border-collapse:collapse;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:1.0625rem;} .ds-kt th{font-family:var(--mono);font-size:.72rem;font-weight:600;letter-spacing:.06em;text-align:left;color:var(--mute);padding:14px 24px 10px 0;} .ds-kt td{padding:14px 24px 14px 0;border-top:1px solid var(--rule);vertical-align:baseline;} .ds-n{font-weight:700;} .ds-n a{color:inherit;text-decoration:none;} .ds-m{font-family:var(--mono);font-size:.8rem;white-space:nowrap;font-variant-numeric:tabular-nums;} .ds-kt tr:hover .ds-n,.ds-kt tr:focus-within .ds-n{color:var(--lit);} .ds-n a:focus-visible{outline:2px solid var(--lit);outline-offset:3px;}"
+    },
+    {
+      "name": "YAML Block",
+      "kind": "custom",
+      "refersTo": "prompt-line",
+      "description": "Mute mono keys, grotesk values, 2ch indents against 1px hairline guides.",
+      "html": "<div class=\"ds-yaml\"><div><span class=\"ds-k\">kind:</span> Post</div><div class=\"ds-k\">metadata:</div><div class=\"ds-ind\"><div><span class=\"ds-k\">name:</span> making-vivado-not-suck-at-git</div><div><span class=\"ds-k\">creationTimestamp:</span> 2025-03-27</div></div></div>",
+      "css": ":host{--paper:#f4f5f2;--ink:#111111;--mute:#63635e;--rule:#d6d7d2;--lit:#2b44ff;--lit-wash:#dfe3ff;--mono:'Martian Mono Variable',ui-monospace,monospace;--sans:'Schibsted Grotesk Variable',system-ui,sans-serif;--ease-out:cubic-bezier(0.16,1,0.3,1);} .ds-yaml{font-family:var(--mono);font-size:.9rem;line-height:1.75;color:var(--ink);background:var(--paper);padding:12px;} .ds-k{color:var(--mute);} .ds-ind{padding-left:2ch;border-left:1px solid var(--rule);margin-left:.5ch;}"
+    },
+    {
+      "name": "Inline Link",
+      "kind": "button",
+      "refersTo": "repo-link",
+      "description": "Ink text with a 1px underline at 3px offset; lit on hover, 2px lit focus ring.",
+      "html": "<p class=\"ds-p\">Browse the code on <a class=\"ds-a\" href=\"#\">GitHub</a>.</p>",
+      "css": ":host{--paper:#f4f5f2;--ink:#111111;--mute:#63635e;--rule:#d6d7d2;--lit:#2b44ff;--lit-wash:#dfe3ff;--mono:'Martian Mono Variable',ui-monospace,monospace;--sans:'Schibsted Grotesk Variable',system-ui,sans-serif;--ease-out:cubic-bezier(0.16,1,0.3,1);} .ds-p{font-family:var(--sans);font-size:1.15rem;color:var(--ink);background:var(--paper);padding:12px;} .ds-a{color:inherit;text-decoration-thickness:1px;text-underline-offset:3px;} .ds-a:hover{color:var(--lit);} .ds-a:focus-visible{outline:2px solid var(--lit);outline-offset:3px;border-radius:1px;}"
+    },
+    {
+      "name": "Code Block",
+      "kind": "card",
+      "refersTo": "code-block",
+      "description": "Flat code wash, ink rule above, hairline below, no radius.",
+      "html": "<pre class=\"ds-pre\"><code>git add digital_camera_pipeline.tcl\ngit commit -m \"added digital_camera_pipeline.tcl\"</code></pre>",
+      "css": ":host{--paper:#f4f5f2;--ink:#111111;--mute:#63635e;--rule:#d6d7d2;--lit:#2b44ff;--lit-wash:#dfe3ff;--mono:'Martian Mono Variable',ui-monospace,monospace;--sans:'Schibsted Grotesk Variable',system-ui,sans-serif;--ease-out:cubic-bezier(0.16,1,0.3,1);} .ds-pre{font-family:var(--mono);font-size:.85rem;padding:18px 20px;overflow-x:auto;margin:0;border-top:1px solid var(--ink);border-bottom:1px solid var(--rule);background:#fbfbf9;color:var(--ink);border-radius:0;}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Terminal Readout",
+    "overview": "Every page is the printed output of a command. The homepage is `kubectl auth whoami -o yaml`, the post page is `kubectl get post <slug> -o yaml`, the 404 is the server's own `NotFound` error, and the lists under the fold are `kubectl get` tables. A `$ command` line in Martian Mono heads each region. Below it, YAML keys in mute mono label values set in Schibsted Grotesk. Scale and weight set the hierarchy, from a 6rem 800-weight name down to a 0.72rem mono column header. Nothing is boxed.\n\nThe surface is light paper with ink type, one hairline grey and one electric blue. The blue marks only what is selected, what links out to a repo, and what the pointer is over. Depth comes from 1px rules: hairline indent guides draw YAML nesting, and solid ink rules divide a command from its output. There are no cards, shadows, gradients or rounded containers. Motion is limited to one authored gesture: the describe panel re-renders like fresh command output.\n\nDensity is low on the first screen, where the name and the four groups get room to breathe, and high in the tables, where rows sit on 14px padding and hairlines.",
+    "keyCharacteristics": [
+      "Commands in mono, values in grotesk, keys in mute.",
+      "One accent (`lit`), reserved for selection, outbound repo links and hover.",
+      "1px rules carry all structure; zero radius everywhere.",
+      "Hierarchy by size and weight only, never by color fills or containers.",
+      "A single motion: the clip-path \"print\" reveal on the active panel."
+    ],
+    "rules": [
+      {
+        "name": "The Lit-Means-Live Rule",
+        "body": "Blue marks only the selected group, outbound repo links, and pointer or focus state. If an element is not selected, not an outbound link, and not under the pointer, it is not blue.",
+        "section": "colors"
+      },
+      {
+        "name": "The Two Greys Rule",
+        "body": "Mute is for text and hairline is for lines. Don't use hairline for text, and don't use mute for rules.",
+        "section": "colors"
+      },
+      {
+        "name": "The Command/Value Split Rule",
+        "body": "Anything a terminal would print as a key, command or identifier is set in mono. Anything a person would say is set in grotesk. Repo names are identifiers, so they are mono.",
+        "section": "typography"
+      },
+      {
+        "name": "The Weight-Not-Color Rule",
+        "body": "Step down the hierarchy by size and weight. Color (mute vs ink) separates keys from values; it never stands in for a heading level.",
+        "section": "typography"
+      },
+      {
+        "name": "The Rule-Not-Box Rule",
+        "body": "Group content with a single 1px line on one side, never with a box enclosing it. A region gets at most one ink rule.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** head every new region or page with a `$` prompt line that names a real command, and render the content as that command's output (YAML keys in mute mono, values in grotesk).",
+      "**Do** keep `lit` (#2b44ff) to selection, outbound repo links, hover and focus. Count the blue elements on a screen; each must be one of those four.",
+      "**Do** draw nesting with 2ch indents against 1px `rule` guides, and separate output from command with a single 1px `ink` rule.",
+      "**Do** set identifiers (repo names, slugs, dates, counts, languages) in Martian Mono, and names and prose in Schibsted Grotesk.",
+      "**Do** step hierarchy by size and weight: 800 display, 700 headline, 750 title, 400 body.",
+      "**Do** keep every authored motion behind the `prefers-reduced-motion` collapse, and give new reveals the `ease-out` curve."
+    ],
+    "donts": [
+      "**Don't** put content in cards, rounded containers, shadowed panels or gradient fills. Use a 1px rule on one side instead.",
+      "**Don't** introduce a second accent hue or tint backgrounds with blue. `lit-wash` is for text selection only.",
+      "**Don't** use corner radius anywhere (0px).",
+      "**Don't** add decorative motion beyond the describe-panel print reveal.",
+      "**Don't** set commands or keys in grotesk, or names and prose in mono."
+    ]
+  }
+}
