@@ -1,0 +1,338 @@
+<!doctype html>
+<!--
+PROTOTYPE — throwaway. Run: python3 -m http.server 8787 -b 127.0.0.1 -d prototype  → http://127.0.0.1:8787/b.html?variant=B1
+Question: within the kubectl direction, which page structure should conneroh.com commit to?
+  B1 = master/detail: whoami YAML with groups on the left swaps a `kubectl describe group` pane (the round-1 winner).
+  B2 = label selector: the command line is the control. Toggle groups inside `kubectl get projects -l 'group in (...)'`
+       and one dense table of all projects filters live.
+  B3 = all at once: no interaction needed. Four group columns side by side, career as `kubectl rollout history`
+       (revisions), writing as `kubectl logs`, close as `kubectl port-forward`.
+Three variants on one throwaway page, switchable via ?variant=. In-memory content only.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Conner Ohnesorge — prototype B</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Martian+Mono:wdth,wght@75..112.5,300..800&family=Schibsted+Grotesk:wght@400..800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f4f5f2;
+    --ink: #111111;
+    --mute: #6b6b66;
+    --rule: #d6d7d2;
+    --lit: #2b44ff;
+    --mono: "Martian Mono", ui-monospace, monospace;
+    --serif: "Source Serif 4", Georgia, serif;
+    --sans: "Schibsted Grotesk", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--paper); color: var(--ink); }
+  body { margin: 0; font-family: var(--serif); font-size: 1.125rem; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  a:hover, a:focus-visible { color: var(--lit); }
+  button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+  :focus-visible { outline: 2px solid var(--lit); outline-offset: 3px; }
+  [hidden] { display: none !important; }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+  /* ============ VARIANT B — KUBECTL AUTH WHOAMI ============ */
+  .kube { max-width: 1320px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 56px) 160px; font-family: var(--sans); }
+  .prompt { font-family: var(--mono); font-size: .85rem; padding: 26px 0 0; color: var(--mute); display: flex; gap: 12px; flex-wrap: wrap; }
+  .prompt b { color: var(--ink); font-weight: 600; }
+  .kube-top { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 0 64px; padding-top: 40px; min-height: calc(100vh - 80px); }
+  .yaml { font-family: var(--mono); font-size: .9rem; line-height: 1.75; }
+  .yaml .k { color: var(--mute); }
+  .yaml .row { display: flex; gap: .6em; align-items: baseline; }
+  .yaml .i1 { padding-left: 2ch; border-left: 1px solid var(--rule); margin-left: .5ch; }
+  .yaml .i2 { padding-left: 2ch; border-left: 1px solid var(--rule); margin-left: .5ch; }
+  .yaml .meta { margin-bottom: 24px; }
+  .username { font-family: var(--sans); font-weight: 800; font-size: clamp(2.8rem, 7.4vw, 6.6rem); line-height: .92; letter-spacing: -.035em; margin: 6px 0 26px; }
+  .groups { list-style: none; margin: 6px 0 28px; padding: 0; }
+  .groups li { display: flex; align-items: center; gap: .7em; }
+  .groups li::before { content: "-"; color: var(--mute); font-family: var(--mono); }
+  .grp { font-family: var(--sans); font-weight: 700; font-size: clamp(1.8rem, 3.6vw, 3.1rem); line-height: 1.12; letter-spacing: -.02em; text-align: left; transition: color .15s; }
+  .grp .c { font-family: var(--mono); font-weight: 400; font-size: .8rem; letter-spacing: 0; color: var(--mute); margin-left: .8em; vertical-align: middle; }
+  .grp[aria-selected="true"] { color: var(--lit); }
+  .grp[aria-selected="true"] .c { color: var(--lit); }
+  .extra { display: grid; grid-template-columns: max-content 1fr; gap: 2px 1.2em; }
+  .extra .v { font-family: var(--sans); font-size: 1.05rem; }
+  .extra .v a { font-family: var(--mono); font-size: .9rem; }
+
+  .describe { border-left: 1px solid var(--ink); padding-left: 36px; position: sticky; top: 24px; align-self: start; }
+  .describe .cmdline { font-family: var(--mono); font-size: .8rem; color: var(--mute); margin: 0 0 18px; }
+  .describe .cmdline b { color: var(--lit); font-weight: 600; }
+  .describe h3 { font-family: var(--sans); font-size: 1.6rem; font-weight: 750; letter-spacing: -.015em; margin: 0 0 8px; }
+  .describe .summary { margin: 0 0 26px; font-size: 1.05rem; line-height: 1.5; }
+  .describe dl { margin: 0; }
+  .describe .it { padding: 14px 0; border-top: 1px solid var(--rule); }
+  .describe .it dt { display: flex; justify-content: space-between; gap: 12px; font-family: var(--mono); font-size: .9rem; font-weight: 600; }
+  .describe .it dt a { text-decoration: none; color: var(--lit); }
+  .describe .it dt span { font-weight: 400; color: var(--mute); font-size: .75rem; }
+  .describe .it dd { margin: 4px 0 0; font-size: 1rem; line-height: 1.45; }
+
+  .get { padding-top: 96px; }
+  .get .prompt { padding: 0 0 14px; border-bottom: 1px solid var(--ink); }
+  table.kt { width: 100%; border-collapse: collapse; font-size: 1rem; }
+  table.kt th { font-family: var(--mono); font-size: .72rem; font-weight: 600; letter-spacing: .06em; text-align: left; color: var(--mute); padding: 14px 24px 10px 0; }
+  table.kt td { padding: 14px 24px 14px 0; border-top: 1px solid var(--rule); vertical-align: baseline; }
+  table.kt td.m { font-family: var(--mono); font-size: .82rem; white-space: nowrap; }
+  table.kt td.n { font-weight: 700; }
+  table.kt tr:hover td.n, table.kt tr:focus-within td.n { color: var(--lit); }
+  table.kt td.d { color: var(--mute); max-width: 52ch; }
+
+  @media (max-width: 900px) {
+    .kube-top { grid-template-columns: 1fr; min-height: 0; }
+    .describe { position: static; border-left: 0; border-top: 1px solid var(--ink); padding: 26px 0 0; margin-top: 36px; }
+    table.kt .hide-sm { display: none; }
+    table.kt td.m { white-space: normal; }
+    .extra { grid-template-columns: 1fr; gap: 0; }
+    .extra .v { margin-bottom: 10px; }
+  }
+  @media (max-width: 520px) { .pswitch span { display: none; } .pswitch a { padding: 9px 12px; } }
+
+  /* ============ PROTOTYPE SWITCHER (tooling, not design) ============ */
+  .pswitch { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); z-index: 99; display: flex; gap: 4px; padding: 5px; background: #ff00a8; border-radius: 999px; font: 600 12px/1 system-ui, sans-serif; box-shadow: 0 4px 18px rgba(0,0,0,.25); }
+  .pswitch span { white-space: nowrap; color: #fff; padding: 9px 10px 9px 12px; }
+  .pswitch a { white-space: nowrap; color: #fff; text-decoration: none; padding: 9px 14px; border-radius: 999px; }
+  .pswitch a[aria-current] { background: #fff; color: #ff00a8; }
+
+  /* ============ B2 — LABEL SELECTOR ============ */
+  .b2-top { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px 64px; align-items: end; padding: 40px 0 0; }
+  .b2-top .username { margin: 8px 0 0; }
+  .b2-extra { font-family: var(--mono); font-size: .85rem; line-height: 1.9; padding-bottom: 10px; }
+  .b2-extra .k { color: var(--mute); }
+  .b2-extra .v { font-family: var(--sans); font-size: 1.02rem; }
+  .selector { margin-top: 64px; padding: 18px 0; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); font-family: var(--mono); font-size: clamp(1rem, 1.9vw, 1.5rem); line-height: 1.5; display: flex; flex-wrap: wrap; align-items: baseline; gap: .2em .5em; }
+  .selector .p { color: var(--mute); }
+  .chip { font-weight: 300; color: var(--mute); text-decoration: line-through; text-decoration-thickness: 1px; transition: color .15s; }
+  .chip[aria-pressed="true"] { color: var(--lit); font-weight: 600; text-decoration: none; }
+  .chip:hover { color: var(--ink); }
+  .selector .hint { font-size: .72rem; color: var(--mute); margin-left: auto; }
+  .b2-table td.n a { text-decoration: none; }
+  .b2-table td.g { font-family: var(--mono); font-size: .82rem; color: var(--lit); white-space: nowrap; }
+  .b2-table td.d { color: var(--ink); }
+  .b2-table tr.out { display: none; }
+  .b2-count { font-family: var(--mono); font-size: .78rem; color: var(--mute); padding-top: 12px; }
+
+  /* ============ B3 — ALL AT ONCE ============ */
+  .b3-id { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 40px; padding: 36px 0 0; }
+  .b3-id .username { font-size: clamp(2.6rem, 6vw, 5.4rem); margin: 0; }
+  .b3-id .line { font-family: var(--sans); font-size: 1.15rem; max-width: 36ch; }
+  .b3-id .line .k { font-family: var(--mono); font-size: .8rem; color: var(--mute); }
+  .b3-cols { margin-top: 56px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--ink); }
+  .col { padding: 22px 24px 28px 0; border-right: 1px solid var(--rule); }
+  .col + .col { padding-left: 24px; }
+  .col:last-child { border-right: 0; padding-right: 0; }
+  .col h2 { margin: 0 0 4px; font-family: var(--sans); font-weight: 800; font-size: clamp(1.8rem, 3vw, 2.6rem); letter-spacing: -.025em; line-height: 1; }
+  .col h2 .k { font-family: var(--mono); font-weight: 400; font-size: .72rem; letter-spacing: 0; color: var(--mute); display: block; margin-bottom: 8px; }
+  .col .what { font-size: .95rem; color: var(--mute); margin: 8px 0 18px; min-height: 3em; }
+  .col ul { list-style: none; margin: 0; padding: 0; }
+  .col li { padding: 12px 0; border-top: 1px solid var(--rule); }
+  .col li a { font-family: var(--mono); font-size: .86rem; font-weight: 600; text-decoration: none; display: flex; justify-content: space-between; gap: 8px; }
+  .col li a span { font-weight: 400; color: var(--mute); font-size: .72rem; }
+  .col li p { margin: 4px 0 0; font-size: .92rem; line-height: 1.4; }
+  .col:hover h2, .col:focus-within h2 { color: var(--lit); }
+  .col li:hover a, .col li:focus-within a { color: var(--lit); }
+  .rollout td.rev { font-family: var(--mono); font-size: 1.6rem; font-weight: 300; color: var(--mute); width: 3ch; }
+  .rollout tr:first-child td.rev { color: var(--lit); font-weight: 600; }
+  .logs { font-family: var(--mono); font-size: .9rem; line-height: 2; padding-top: 10px; }
+  .logs a { text-decoration: none; display: grid; grid-template-columns: 22ch 1fr; gap: 16px; }
+  .logs a .ts { color: var(--mute); }
+  .logs a .msg { font-family: var(--sans); font-size: 1.05rem; }
+  .logs a:hover .msg { color: var(--lit); text-decoration: underline; }
+  .org-sm { display: none; font-weight: 400; color: var(--mute); font-size: .92rem; }
+  @media (max-width: 900px) { .org-sm { display: block; } }
+  @media (max-width: 1000px) { .b3-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); } .col:nth-child(2) { border-right: 0; padding-right: 0; } .col:nth-child(3) { padding-left: 0; } .col:nth-child(n+3) { border-top: 1px solid var(--rule); } }
+  @media (max-width: 900px) { .b2-top { grid-template-columns: 1fr; } .selector .hint { margin-left: 0; width: 100%; } }
+  @media (max-width: 600px) { .b3-cols { grid-template-columns: 1fr; } .col, .col + .col { padding: 22px 0 24px; border-right: 0; } .col + .col { border-top: 1px solid var(--rule); } .col .what { min-height: 0; } .logs a { grid-template-columns: 1fr; gap: 0; margin-bottom: 12px; } }
+</style>
+</head>
+<body>
+
+<main class="kube" id="B1" hidden>
+  <div class="prompt"><span>conner@conneroh.com</span><span>~</span><b>$ kubectl auth whoami -o yaml</b></div>
+  <div class="kube-top">
+    <div class="yaml">
+      <div class="meta">
+        <div class="row"><span class="k">apiVersion:</span><span>authentication.k8s.io/v1</span></div>
+        <div class="row"><span class="k">kind:</span><span>SelfSubjectReview</span></div>
+      </div>
+      <div class="row"><span class="k">status:</span></div>
+      <div class="i1">
+        <div class="row"><span class="k">userInfo:</span></div>
+        <div class="i2">
+          <div class="row"><span class="k">username:</span></div>
+          <h1 class="username">conner<br>ohnesorge</h1>
+          <div class="row"><span class="k">groups:</span><span class="k" style="font-size:.75rem">&nbsp;# select one</span></div>
+          <ul class="groups" role="tablist" aria-label="Areas of work" id="groups"></ul>
+          <div class="row"><span class="k">extra:</span></div>
+          <div class="extra i2">
+            <span class="k">role:</span><span class="v">AI Engineer, CNB (Cottingham &amp; Butler)</span>
+            <span class="k">education:</span><span class="v">B.S. Electrical Engineering, minor CS · Iowa State</span>
+            <span class="k">location:</span><span class="v">Dubuque, Iowa</span>
+            <span class="k">links:</span><span class="v"><a href="https://github.com/connerohnesorge">github</a> · <a href="https://x.com/ConnerOhnesorge">x</a> · <a href="#">email TBD</a></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <aside class="describe" role="tabpanel" id="describe" aria-live="polite"></aside>
+  </div>
+
+  <section class="get">
+    <div class="prompt"><b>$ kubectl get experience</b></div>
+    <table class="kt"><thead><tr><th>NAME</th><th>ORG</th><th class="hide-sm">DESCRIPTION</th><th>PERIOD</th></tr></thead><tbody id="exp-b"></tbody></table>
+  </section>
+  <section class="get">
+    <div class="prompt"><b>$ kubectl get posts</b></div>
+    <table class="kt"><thead><tr><th>NAME</th><th class="hide-sm">DESCRIPTION</th><th>CREATED</th></tr></thead><tbody id="posts-b"></tbody></table>
+  </section>
+</main>
+
+
+<main class="kube" id="B2" hidden>
+  <div class="prompt"><span>conner@conneroh.com</span><span>~</span><b>$ kubectl auth whoami</b></div>
+  <div class="b2-top">
+    <div><div class="b2-extra"><span class="k">USERNAME</span></div><h1 class="username">conner<br>ohnesorge</h1></div>
+    <div class="b2-extra">
+      <div><span class="k">ROLE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> <span class="v">AI Engineer, CNB</span></div>
+      <div><span class="k">EDUCATION&nbsp;</span> <span class="v">B.S. EE, minor CS · Iowa State</span></div>
+      <div><span class="k">LOCATION&nbsp;&nbsp;</span> <span class="v">Dubuque, Iowa</span></div>
+      <div><span class="k">LINKS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> <span class="v"><a href="https://github.com/connerohnesorge">github</a> · <a href="https://x.com/ConnerOhnesorge">x</a> · <a href="#">email TBD</a></span></div>
+    </div>
+  </div>
+  <div class="selector" role="group" aria-label="Filter projects by area">
+    <span>$ kubectl get projects -l</span><span class="p">'group in (</span><span id="chips" style="display:contents"></span><span class="p">)'</span>
+    <span class="hint"># toggle a group</span>
+  </div>
+  <table class="kt b2-table"><thead><tr><th>NAME</th><th>GROUP</th><th class="hide-sm">DESCRIPTION</th><th>LANG</th></tr></thead><tbody id="b2-rows"></tbody></table>
+  <p class="b2-count" id="b2-count"></p>
+  <section class="get">
+    <div class="prompt"><b>$ kubectl get experience</b></div>
+    <table class="kt"><thead><tr><th>NAME</th><th>ORG</th><th class="hide-sm">DESCRIPTION</th><th>PERIOD</th></tr></thead><tbody data-exp></tbody></table>
+  </section>
+  <section class="get">
+    <div class="prompt"><b>$ kubectl get posts</b></div>
+    <table class="kt"><thead><tr><th>NAME</th><th class="hide-sm">SLUG</th><th>CREATED</th></tr></thead><tbody data-posts></tbody></table>
+  </section>
+</main>
+
+<main class="kube" id="B3" hidden>
+  <div class="prompt"><span>conner@conneroh.com</span><span>~</span><b>$ kubectl get user conner -o wide</b></div>
+  <div class="b3-id">
+    <h1 class="username">conner ohnesorge</h1>
+    <p class="line"><span class="k">role:</span> AI Engineer at CNB. <span class="k">edu:</span> B.S. Electrical Engineering, minor CS, Iowa State. <span class="k">loc:</span> Dubuque, Iowa.</p>
+  </div>
+  <div class="prompt" style="padding-top:56px"><b>$ kubectl get projects --all-groups</b></div>
+  <div class="b3-cols" id="b3-cols"></div>
+  <section class="get">
+    <div class="prompt"><b>$ kubectl rollout history deployment/conner</b></div>
+    <table class="kt rollout"><thead><tr><th>REV</th><th>ROLE</th><th class="hide-sm">ORG</th><th class="hide-sm">CHANGE-CAUSE</th><th>PERIOD</th></tr></thead><tbody id="b3-roll"></tbody></table>
+  </section>
+  <section class="get">
+    <div class="prompt"><b>$ kubectl logs conner --since=2021</b></div>
+    <div class="logs" id="b3-logs"></div>
+  </section>
+  <section class="get">
+    <div class="prompt"><b>$ kubectl port-forward conner 443</b></div>
+    <p style="font-family:var(--sans);font-size:1.4rem;max-width:40ch">Hiring for AI engineering, Go, or hardware work? Reach out at <a href="#">[email TBD]</a> or on <a href="https://github.com/connerohnesorge">GitHub</a>.</p>
+  </section>
+</main>
+
+<nav class="pswitch" aria-label="Prototype variant switcher"><span>PROTOTYPE · kubectl</span><a href="?variant=B1">B1 · describe</a><a href="?variant=B2">B2 · selector</a><a href="?variant=B3">B3 · all at once</a></nav>
+
+<script>
+const G = {
+  agents: { label: "agents", flag: "--agents", what: "Tooling that constrains, records, and coordinates AI coding agents.", items: [
+    ["conclaude", "https://github.com/connerohnesorge/conclaude", "Safely constrain and conclude Claude Code sessions with hooks and rules.", "Rust · 37★"],
+    ["claude-agent-sdk-go", "https://github.com/connerohnesorge/claude-agent-sdk-go", "Claude Agent SDK for Go.", "Go · 25★"],
+    ["spectr", "https://github.com/connerohnesorge/spectr", "Validatable spec-driven development for agent workflows.", "Go · 5★"],
+    ["vaultr", "https://github.com/connerohnesorge/vaultr", "Captures and searches agent sessions. Stay on top of life and work.", "Rust"],
+  ]},
+  go: { label: "go", flag: "--go", what: "Pure-Go reimplementations of hard systems, no cgo.", items: [
+    ["gohard", "https://github.com/connerohnesorge/gohard", "Pure-Go VHDL language server and deterministic simulator, VHDL-1993 to 2019.", "Go"],
+    ["dukdb-go", "https://github.com/connerohnesorge/dukdb-go", "A cgo-less implementation of the DuckDB v1.4.3 database driver.", "Go"],
+    ["lzma-go", "https://github.com/connerohnesorge/lzma-go", "Native Go implementation of the LZMA compression algorithm.", "Go"],
+    ["groq-go", "https://github.com/connerohnesorge/groq-go", "Client for language models on the Groq API.", "Go · 25★"],
+  ]},
+  nix: { label: "nix", flag: "--nix", what: "Reproducible builds and machines, declared in Nix.", items: [
+    ["bufrnix", "https://github.com/connerohnesorge/bufrnix", "Nix-powered Protocol Buffers with declarative, reproducible code generation.", "Nix"],
+    ["nordvpn-flake", "https://github.com/connerohnesorge/nordvpn-flake", "NordVPN CLI package and NixOS module.", "Nix · 5★"],
+    ["kiro-flake", "https://github.com/connerohnesorge/kiro-flake", "Kiro packaged as a Nix flake.", "Nix"],
+    ["nvim", "https://github.com/connerohnesorge/nvim", "Personal Neovim configuration.", "Lua"],
+  ]},
+  fpga: { label: "fpga", flag: "--fpga", what: "Digital design and embedded systems on Xilinx Zynq and custom cores.", items: [
+    ["steroscopic-hardware", "https://github.com/connerohnesorge/steroscopic-hardware", "Real-time stereoscopic depth mapping on dual Zedboards.", "VHDL"],
+    ["cpre488-mp2", "https://github.com/connerohnesorge/cpre488-mp2", "1080p HDMI video pipeline on Zynq: TPG to VDMA to HDMI.", "Zynq"],
+    ["cpre488-mp0", "https://github.com/connerohnesorge/cpre488-mp0", "NES emulator on a Zynq 7000 SoC, ROMs from SD card.", "Zynq"],
+    ["mips-cpu-design", "https://github.com/connerohnesorge/mips-cpu-design", "MIPS cores: single-cycle, multicycle, and pipelined.", "HDL"],
+  ]},
+};
+const EXP = [
+  ["AI Engineer", "CNB (Cottingham & Butler)", "", "current"],
+  ["Data Scientist", "CSE, Colorado Springs", "Resource-constrained data pipelines and large-scale scrapers of college sports data in Go, with optimized MySQL.", "Jun–Aug 2024"],
+  ["Founding Chief AI Officer", "Kreative DocuVet", "Diarized transcription and LLM pipelines for veterinary practices; collected a veterinarian voice corpus.", "Dec 2023–Jul 2024"],
+  ["Controls Systems Engineer Intern", "Freund-Vector", "Product development for granulation, compactor, and mixer machines. Rewrote an internal VB6 app in C#.", "Jun–Aug 2023"],
+  ["Machine Learning Researcher", "Iowa State University", "EEG gesture recognition with real-time classification.", "Dec 2021–Apr 2022"],
+];
+const POSTS = [
+  ["making-vivado-not-suck-at-git", "Making Vivado not suck at Git", "2025-03"],
+  ["my-ethics", "My Ethics", "2025-05"],
+  ["iastate-reflection", "A Reflective Journey at Iowa State", "2025-03"],
+  ["sustainability-and-extension", "Sustainability and Extension as a Solution to World Hunger", "2021-12"],
+  ["miracle-rice-in-bali", "Miracle Rice in Bali", "2021-12"],
+];
+const esc = s => s.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+
+const POST_TS = { "my-ethics": "2025-05-02T13:36Z", "making-vivado-not-suck-at-git": "2025-03-27T14:13Z", "iastate-reflection": "2025-03-27T05:48Z", "sustainability-and-extension": "2021-12-17T19:42Z", "miracle-rice-in-bali": "2021-12-01T19:42Z" };
+const V = ["B1", "B2", "B3"];
+const qv = new URLSearchParams(location.search).get("variant");
+const variant = V.includes(qv) ? qv : "B1";
+const root = document.getElementById(variant); root.hidden = false;
+document.querySelector(`.pswitch a[href="?variant=${variant}"]`).setAttribute("aria-current", "page");
+const expRows = EXP.map(([r, o, d, p]) => `<tr><td class="n">${esc(r)}</td><td>${esc(o)}</td><td class="d hide-sm">${esc(d) || "—"}</td><td class="m">${p}</td></tr>`).join("");
+const postRows = POSTS.map(([s, t, c]) => `<tr><td class="n"><a href="#" style="text-decoration:none">${esc(t)}</a></td><td class="d hide-sm m">${s}</td><td class="m">${c}</td></tr>`).join("");
+root.querySelectorAll("[data-exp]").forEach(e => e.innerHTML = expRows);
+root.querySelectorAll("[data-posts]").forEach(e => e.innerHTML = postRows);
+
+if (variant === "B1") {
+  const ul = document.getElementById("groups"), panel = document.getElementById("describe");
+  ul.innerHTML = Object.entries(G).map(([k, g]) => `<li><button class="grp" role="tab" data-g="${k}" aria-selected="false" aria-controls="describe">${g.label}<span class="c">${g.items.length} repos</span></button></li>`).join("");
+  const btns = [...ul.querySelectorAll(".grp")];
+  const set = k => {
+    btns.forEach(b => b.setAttribute("aria-selected", String(b.dataset.g === k)));
+    const g = G[k];
+    panel.innerHTML = `<p class="cmdline">$ kubectl describe group <b>${g.label}</b></p><h3>${g.label}</h3><p class="summary">${g.what}</p>
+      <dl>${g.items.map(([n, u, d, m]) => `<div class="it"><dt><a href="${u}">${n}</a><span>${m}</span></dt><dd>${esc(d)}</dd></div>`).join("")}</dl>`;
+  };
+  btns.forEach(b => ["click", "mouseenter", "focus"].forEach(ev => b.addEventListener(ev, () => set(b.dataset.g))));
+  set("agents");
+  document.getElementById("exp-b").innerHTML = expRows;
+  document.getElementById("posts-b").innerHTML = postRows;
+}
+
+if (variant === "B2") {
+  const on = new Set(Object.keys(G));
+  const chips = document.getElementById("chips"), rows = document.getElementById("b2-rows"), count = document.getElementById("b2-count");
+  const keys = Object.keys(G);
+  chips.innerHTML = keys.map((k, i) => `<button class="chip" data-g="${k}" aria-pressed="true">${k}</button>${i < keys.length - 1 ? '<span class="p">,</span>' : ""}`).join("");
+  rows.innerHTML = Object.entries(G).flatMap(([k, g]) => g.items.map(([n, u, d, m]) => `<tr data-g="${k}"><td class="n m"><a href="${u}">${n}</a></td><td class="g">${k}</td><td class="d hide-sm">${esc(d)}</td><td class="m">${m}</td></tr>`)).join("");
+  const render = () => {
+    chips.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", String(on.has(c.dataset.g))));
+    let n = 0; rows.querySelectorAll("tr").forEach(r => { const vis = on.has(r.dataset.g); r.classList.toggle("out", !vis); n += vis; });
+    count.textContent = n ? `${n} projects` : "No resources found. Toggle a group back on.";
+  };
+  chips.addEventListener("click", e => { const c = e.target.closest(".chip"); if (!c) return; on.has(c.dataset.g) ? on.delete(c.dataset.g) : on.add(c.dataset.g); render(); });
+  render();
+}
+
+if (variant === "B3") {
+  document.getElementById("b3-cols").innerHTML = Object.entries(G).map(([k, g]) => `<section class="col"><h2><span class="k">group</span>${k}</h2><p class="what">${g.what}</p><ul>${g.items.map(([n, u, d, m]) => `<li><a href="${u}">${n}<span>${m}</span></a><p>${esc(d)}</p></li>`).join("")}</ul></section>`).join("");
+  document.getElementById("b3-roll").innerHTML = EXP.map(([r, o, d, p], i) => `<tr><td class="rev">${EXP.length - i}</td><td class="n">${esc(r)}<div class="org-sm">${esc(o)}</div></td><td class="hide-sm">${esc(o)}</td><td class="d hide-sm">${esc(d) || "current revision"}</td><td class="m">${p}</td></tr>`).join("");
+  document.getElementById("b3-logs").innerHTML = [...POSTS].sort((a, b) => POST_TS[b[0]].localeCompare(POST_TS[a[0]])).map(([s, t]) => `<a href="#"><span class="ts">${POST_TS[s]}</span><span class="msg">${esc(t)}</span></a>`).join("");
+}
+</script>
+</body>
+</html>
