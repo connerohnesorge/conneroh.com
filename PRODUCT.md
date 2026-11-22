@@ -42,6 +42,7 @@ Name: Conner Ohnesorge. Domain: conneroh.com. Email: conneroisu@pm.me. LinkedIn:
 
 - Old site content (Go/templ): `/tmp/cfsetup/ref/conneroh.com/internal/data/` (projects, posts, employments).
 - Employment records: AI Engineer, CNB (current); Data Scientist, CSE, Colorado Springs (Jun to Aug 2024); Founding Chief AI Officer, Kreative DocuVet (Dec 2023 to Jul 2024); Controls Systems Engineer Intern, Freund-Vector (Jun to Aug 2023); Machine Learning Researcher, Iowa State (Dec 2021 to Apr 2022).
+- Senior design sddec25-01 (team, Iowa State, Dec 2025): pupil segmentation trained on OpenEDS via Modal and MLflow, 98.9% validation mIoU, deployed on AMD Kria KV260 DPU. Dataset: huggingface.co/datasets/Conner/openeds-precomputed.
 - GitHub stars: conclaude 37, claude-agent-sdk-go 25, groq-go 25, vim-toggle 47, spectr 5.
 - No testimonials, press, or metrics beyond GitHub stars. Do not fabricate any.
 

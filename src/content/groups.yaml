@@ -3,12 +3,15 @@
 - id: agents
   summary: Tooling that constrains, records, and coordinates AI coding agents.
   order: 1
+- id: ml
+  summary: Training vision models and deploying them to edge accelerators.
+  order: 2
 - id: go
   summary: Pure-Go reimplementations of hard systems, no cgo.
-  order: 2
+  order: 3
 - id: nix
   summary: Reproducible builds and machines, declared in Nix.
-  order: 3
-- id: fpga
-  summary: Digital design and embedded systems on Xilinx Zynq and custom cores.
   order: 4
+- id: fpga
+  summary: Digital design and embedded systems on Xilinx Zynq, Kria, and custom cores.
+  order: 5
