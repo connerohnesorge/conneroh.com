@@ -1,6 +1,6 @@
 ---
-title: cpre488-mp0
-repo: https://github.com/connerohnesorge/cpre488-mp0
+title: zynq-nes-emulator
+repo: https://github.com/connerohnesorge/zynq-nes-emulator
 groups: [fpga]
 lang: Zynq
 featured: true
