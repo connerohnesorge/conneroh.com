@@ -1,0 +1,11 @@
+---
+title: "Casebook"
+summary: "A research workspace for configuring reports and following a run through to its findings."
+groups: [cnb]
+lang: TypeScript
+order: 12
+---
+
+Casebook lets researchers choose a report configuration, follow the search as it runs, and return to the finished report. My contribution was the identity check on requests to the app.
+
+Rather than trust an email address simply because it appears on a request, I connected Casebook to a verifier that checks the gateway’s signature. The app uses the verified identity to identify the caller and rejects the request if verification fails.

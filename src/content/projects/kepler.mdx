@@ -1,0 +1,11 @@
+---
+title: "Kepler"
+summary: "Reviewing file mappings before they become part of a recurring insurance data feed."
+groups: [cnb]
+lang: "Go"
+order: 30
+---
+
+A carrier might send claims as fixed-width text while an employer sends eligibility as a spreadsheet. Kepler keeps a Python mapping for each feed. A model drafts the mapping, and the feed owner reviews how the incoming fields will translate into claim or eligibility records.
+
+I built the step that turns a checked mapping into a proposed code change. Kepler verifies that the underlying code is still at the revision used for the checks, then publishes the proposal to a new branch. It won’t overwrite an existing branch. That keeps the reviewer’s copy intact if the same publication runs again.

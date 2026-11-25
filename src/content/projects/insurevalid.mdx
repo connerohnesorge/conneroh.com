@@ -1,0 +1,11 @@
+---
+title: "ScrubberDucky"
+summary: "Document review for benefits teams preparing a renewal submission."
+groups: [cnb]
+lang: Rust
+order: 14
+---
+
+Benefits consultants use ScrubberDucky to check the documents in a renewal submission. A filename can help distinguish dental coverage from medical coverage, but it can also contain the employer’s name on every file.
+
+I changed the classifier so that when the employer’s name contains the word “dental” or “vision,” it disables the usual dental and vision skip for that submission. A medical document can then go through classification instead of being set aside because of who employs the people on the plan.

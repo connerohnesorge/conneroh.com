@@ -1,0 +1,11 @@
+---
+title: "Augur"
+summary: "Tracing claim records extracted from insurance loss reports back to the text the model read."
+groups: [cnb]
+lang: "Rust"
+order: 33
+---
+
+A loss run is a report of insurance claims. Augur turns those reports into structured records. When a value looks wrong, a reviewer needs to distinguish a mistake in reading the page from a mistake in interpreting its contents.
+
+I added an audit trail to the extraction process. When Augur passes text to the model, it saves that text with the section being processed, including text recovered from a scan. The reviewer can open the section and see the model’s input. If Augur sent PDF pages directly instead, the view lists the page range rather than presenting a blank transcript.

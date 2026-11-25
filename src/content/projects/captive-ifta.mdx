@@ -1,0 +1,11 @@
+---
+title: "Captive IFTA"
+summary: "Quarterly mileage filings for captive insurance teams, with a review step for historical workbooks."
+groups: [cnb]
+lang: Go
+order: 13
+---
+
+Captive insurance teams collect quarterly fuel-tax filings from member carriers. Captive IFTA organizes the miles by jurisdiction, member, and filing period. I built the import for mileage already recorded in older workbooks.
+
+Before writing anything, the importer shows which filings are new, which match, and which would change an existing record. The reviewer must acknowledge each overwrite separately: accepting a workbook is not blanket permission to replace its entire history.

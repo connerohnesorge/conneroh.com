@@ -1,0 +1,11 @@
+---
+title: "Igloo"
+summary: "A work intake app that preserves the reasoning behind project priorities."
+groups: [cnb]
+lang: Go
+order: 11
+---
+
+Igloo gives teams a place to describe proposed work and compare its priority with other requests. I wrote the import that carries ratings from a portfolio board into Igloo.
+
+The two systems ask different questions. The board rated business value and customer impact separately; Igloo uses one value rating. The import takes the higher of the two and keeps both originals so a reviewer can see where the new rating came from. It won’t overwrite an existing rating on the matched project.
