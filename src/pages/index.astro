@@ -72,7 +72,7 @@ const first = groups[0];
               {g.items.map((p) => (
                 <li>
                   <div class="row">
-                    <a class="mono" href={p.data.repo}>{p.data.title}</a>
+                    {p.data.repo ? <a class="mono" href={p.data.repo}>{p.data.title}</a> : <span class="ptitle mono">{p.data.title}</span>}
                     <span class="pmeta mono">{p.data.lang}{p.data.stars ? ` · ${p.data.stars} stars` : ""}</span>
                   </div>
                   <p>{p.body?.trim()}</p>
@@ -188,7 +188,7 @@ const first = groups[0];
   .panel ul { list-style: none; margin: 0; padding: 0; }
   .panel li { padding: 14px 0; border-top: 1px solid var(--rule); }
   .panel .row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; line-height: 1.25; }
-  .panel .row a { font-size: .9rem; font-weight: 600; color: var(--lit); text-decoration: none; }
+  .panel .row a, .panel .row .ptitle { font-size: .9rem; font-weight: 600; color: var(--lit); text-decoration: none; }
   .panel .row a:hover { text-decoration: underline; }
   .panel .pmeta { font-size: .75rem; color: var(--mute); white-space: nowrap; }
   .panel li p { margin: 4px 0 0; line-height: 1.45; }
