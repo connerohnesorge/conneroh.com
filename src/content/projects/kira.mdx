@@ -1,0 +1,11 @@
+---
+title: "Kira"
+summary: "A workplace assistant that checks what a colleague can read before sending them an answer."
+groups: [cnb]
+lang: Go
+order: -2
+---
+
+Kira lets coworkers use personal assistants to exchange messages. An assistant can read a file for its owner, then use what it learned to answer a colleague. Even if the reply never mentions the file by name, it can still reveal something the colleague couldn’t open.
+
+I built the check that runs before one assistant sends a message to another. Kira keeps its own list of what the assistant read while preparing the reply, rather than asking the model which sources it used. For a file, it checks whether the recipient can open that same file. If the check fails, Kira holds the message for the sender to review.

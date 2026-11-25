@@ -1,0 +1,11 @@
+---
+title: "Nexus Assist"
+summary: "A claims assistant that distinguishes a documented contact from an unanswered call."
+groups: [cnb]
+lang: Go
+order: -1
+---
+
+Nexus Assist lets insurance adjusters ask questions about a claim in plain language. “Did anyone reach the driver?” sounds like a yes-or-no question, but a note saying someone left a voicemail supports neither answer: it documents an attempt, not a conversation.
+
+I wrote instructions for how the assistant should answer from the claim notes. It looks for entries that name the person in question. When those entries show only unsuccessful attempts, it leads with that distinction and gives the date and entry number for each attempt. The adjuster can check the notes before deciding whether to call again.

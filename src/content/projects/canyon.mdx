@@ -1,0 +1,11 @@
+---
+title: "Canyon"
+summary: "A call console that keeps track of which representative handled each part of a conversation."
+groups: [cnb]
+lang: Go
+order: -3
+---
+
+Canyon records calls and gives representatives a transcript to review afterward. A caller can speak to two people on the same recording: one rep answers, then hands the caller to a colleague. The recording may still carry the first rep’s extension long after the handoff.
+
+I used the time the second desk joined the call to find the handoff in the recording. That gives the first rep the transcript up to that point and the second rep the part that follows. Neither has to rely on a new recording starting when the caller changes hands.
