@@ -68,7 +68,7 @@ const writing = await posts();
             <h2>{g.id}</h2>
             <p class="summary">{g.summary}</p>
             <ul>
-              {(g.id === "cnb" ? g.items.slice(0, 3) : g.items).map((p) => (
+              {g.items.map((p) => (
                 <li>
                   <div class="row">
                     <a class="mono" href={p.data.repo ?? `/projects/${p.id}/`}>{p.data.title}</a>
