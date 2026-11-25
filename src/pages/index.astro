@@ -5,7 +5,6 @@ import { experience, groupsWithProjects, posts, ym } from "../lib";
 const groups = await groupsWithProjects();
 const jobs = await experience();
 const writing = await posts();
-const first = groups[0];
 ---
 <Base
   title="Conner Ohnesorge · AI Engineer"
@@ -39,7 +38,7 @@ const first = groups[0];
                   aria-selected={i === 0 ? "true" : "false"}
                   tabindex={i === 0 ? 0 : -1}
                   data-group={g.id}
-                ><span class="dash" aria-hidden="true">-</span><span class="gname">{g.id}</span><span class="count">{g.items.length} repos</span></a>
+                ><span class="dash" aria-hidden="true">-</span><span class="gname">{g.id}</span><span class="count">{g.items.length} projects</span></a>
               ))}
             </div>
 
@@ -69,16 +68,17 @@ const first = groups[0];
             <h2>{g.id}</h2>
             <p class="summary">{g.summary}</p>
             <ul>
-              {g.items.map((p) => (
+              {(g.id === "cnb" ? g.items.slice(0, 3) : g.items).map((p) => (
                 <li>
                   <div class="row">
-                    <a class="mono" href={p.data.repo}>{p.data.title}</a>
+                    <a class="mono" href={p.data.repo ?? `/projects/${p.id}/`}>{p.data.title}</a>
                     <span class="pmeta mono">{p.data.lang}{p.data.stars ? ` · ${p.data.stars} stars` : ""}</span>
                   </div>
-                  <p>{p.body?.trim()}</p>
+                  <p>{p.data.summary ?? p.body?.trim()}</p>
                 </li>
               ))}
             </ul>
+            {g.id === "cnb" && <p><a href="/projects/cnb/">All {g.items.length} C&amp;B projects →</a></p>}
           </section>
         ))}
       </div>
@@ -90,7 +90,7 @@ const first = groups[0];
         <thead><tr><th scope="col">NAME</th><th scope="col" class="hide-xs">ORG</th><th scope="col" class="hide-sm">DESCRIPTION</th><th scope="col">PERIOD</th></tr></thead>
         <tbody>
           {jobs.map((j) => (
-            <tr><td class="n">{j.data.role}<span class="sub">{j.data.org}</span></td><td class="hide-xs">{j.data.org}</td><td class="d hide-sm">{j.data.summary ?? "—"}</td><td class="m">{j.data.period}</td></tr>
+            <tr><td class="n">{j.data.role}<span class="sub">{j.data.org}</span></td><td class="hide-xs">{j.data.org}</td><td class="d hide-sm">{j.data.summary ?? "—"}{j.id === "ai-engineer-cnb" && <> <a href="/projects/cnb/">Projects →</a></>}</td><td class="m">{j.data.period}</td></tr>
           ))}
         </tbody>
       </table>

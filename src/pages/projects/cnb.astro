@@ -1,0 +1,23 @@
+---
+import { getCollection } from "astro:content";
+import Base from "../../layouts/Base.astro";
+const projects = (await getCollection("projects", p => p.data.groups.some(g => g.id === "cnb")))
+  .sort((a, b) => a.data.order - b.data.order);
+---
+<Base title="Cottingham & Butler projects · Conner Ohnesorge" description="Projects from my current role as an AI Engineer at Cottingham & Butler.">
+  <main id="main" class="wrap">
+    <p class="prompt"><a href="/#group-cnb">← Portfolio</a></p>
+    <p class="mono">Current role · AI Engineer</p>
+    <h1>Cottingham &amp; Butler projects</h1>
+    <ul>{projects.map(p => <li><a href={p.data.repo ?? `/projects/${p.id}/`}>{p.data.title}</a><p>{p.data.summary}</p></li>)}</ul>
+  </main>
+</Base>
+<style>
+  main { padding-block: 2rem 5rem; }
+  .mono { margin-top: 3rem; color: var(--mute); }
+  h1 { margin: .4em 0 1em; line-height: 1.1; }
+  ul { padding: 0; list-style: none; max-width: 70ch; }
+  li { border-top: 1px solid var(--rule); padding: 1em 0; }
+  li a { font-weight: 700; }
+  li p { margin: .35em 0 0; line-height: 1.5; }
+</style>

@@ -2,6 +2,7 @@
 - id: ai-engineer-cnb
   role: AI Engineer
   org: CNB (Cottingham & Butler)
+  summary: I build AI applications, insurance tools, and the developer platforms that support them.
   period: current
   order: 1
 - id: data-scientist-cse

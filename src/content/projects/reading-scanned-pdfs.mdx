@@ -1,0 +1,13 @@
+---
+title: "PDF-to-Text Converter"
+summary: "Extracting text from digital documents without losing the scans in the same batch."
+groups: [cnb]
+lang: TypeScript
+order: 1
+---
+
+A PDF can look like a page of text and still contain nothing you can copy. When I moved an internal PDF converter from R Shiny to SvelteKit, that distinction mattered: reading the embedded text worked for digital documents, but a scan could come back as an empty text file.
+
+I added a second path for scans. The converter tries the text layer first, then looks at how much text it found relative to the number of pages. That last detail matters for a scanned packet with a typed cover sheet: finding a few words on page one doesn’t mean the rest is readable. When the text layer is too thin, the converter sends the document through optical character recognition instead.
+
+The person using the tool still asks for the same thing: a text file for each PDF. They don’t have to identify which kind of PDF they have before uploading it.

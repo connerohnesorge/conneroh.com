@@ -1,0 +1,29 @@
+---
+import { getCollection, render } from "astro:content";
+import Base from "../../layouts/Base.astro";
+
+export async function getStaticPaths() {
+  return (await getCollection("projects", p => !p.data.repo)).map(project => ({
+    params: { slug: project.id }, props: { project },
+  }));
+}
+const { project } = Astro.props;
+const { Content } = await render(project);
+---
+<Base title={`${project.data.title} · Conner Ohnesorge`} description={project.data.summary ?? project.data.title}>
+  <main id="main" class="wrap">
+    <p class="prompt"><a href="/projects/cnb/">← C&amp;B projects</a></p>
+    <article>
+      <p class="mono">AI Engineer · Cottingham &amp; Butler</p>
+      <h1>{project.data.title}</h1>
+      <Content />
+    </article>
+  </main>
+</Base>
+<style>
+  main { padding-block: 2rem 5rem; }
+  article { max-width: 62ch; margin-top: 4rem; line-height: 1.65; font-size: 1.125rem; }
+  article > .mono { color: var(--mute); font-size: .875rem; }
+  h1 { line-height: 1.1; margin: .5em 0 1em; }
+  article :global(p) { margin-bottom: 1em; }
+</style>

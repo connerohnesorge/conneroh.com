@@ -19,7 +19,7 @@ npm run build      # writes dist/
 | What | Where |
 |---|---|
 | Areas of work (the `groups:` list) | `src/content/groups.yaml` |
-| Projects shown in each group's panel | `src/content/projects/*.md` |
+| Projects shown in each group's panel | `src/content/projects/*.{md,mdx}` |
 | Experience table | `src/content/experience.yaml` |
 | Posts | `src/content/posts/*.md` |
 
@@ -37,6 +37,8 @@ order: 1             # position within the group's panel
 ---
 One-line description shown in the panel.
 ```
+
+For a C&B case study, use `.mdx`, set `groups: [cnb]`, and provide a one-line `summary` instead of a `repo` URL. Its body becomes a local project page; do not link private repositories.
 
 The build fails if a group has no featured projects.
 

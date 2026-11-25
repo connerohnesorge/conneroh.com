@@ -1,0 +1,11 @@
+---
+title: "Computers"
+summary: "Making the Kubernetes scheduler account for the memory each development environment can use."
+groups: [cnb]
+lang: Go
+order: 3
+---
+
+An isolated development environment has two views of memory: what the virtual machine can use and what Kubernetes has been asked to reserve. If the reservation is smaller, the scheduler can place another environment on the same machine using memory the first one has already been promised.
+
+I changed the provisioning code so the memory request follows the guest’s configured size, whether someone chooses the default or asks for a larger environment. A larger guest now changes the placement decision too. I added regression tests for both sizes so that a change to the defaults can’t quietly separate the two numbers again.

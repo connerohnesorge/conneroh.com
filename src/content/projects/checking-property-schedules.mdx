@@ -1,0 +1,11 @@
+---
+title: "SOV Workbench"
+summary: "Distinguishing shared coverage limits from individual buildings in a property schedule."
+groups: [cnb]
+lang: Go
+order: 2
+---
+
+A property schedule lists buildings and their insured values. It can also contain a row for a coverage limit shared across a location. Treat every row as a building and the checker reports a building that doesn’t exist.
+
+I changed the checker to recognize a shared-limit row and keep it out of the building count. Rather than discard the row, it points the reviewer back to its place in the original spreadsheet. The distinction matters: the limit is relevant to the review, even though it isn’t another property.
